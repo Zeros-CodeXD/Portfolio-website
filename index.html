@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEROS | Software & AI Developer</title>
+    <style>
+        /* --- MODERN DARK THEME --- */
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #161616;
+            --accent-cyan: #00e5ff;
+            --accent-red: #ff003c;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at top, #1a1a1a 0%, var(--bg-color) 70%);
+            border-bottom: 1px solid #333;
+        }
+
+        .glitch-title {
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: var(--text-main);
+            text-shadow: 3px 3px var(--accent-cyan), -3px -3px var(--accent-red);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background-color: rgba(0, 229, 255, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* --- PROJECTS SECTION --- */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 60px 0 40px 0;
+            color: var(--text-main);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 30px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-cyan);
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .tag {
+            display: inline-block;
+            background: #222;
+            color: var(--accent-cyan);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            margin-right: 5px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            background-color: var(--accent-cyan);
+            color: #000;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #fff;
+        }
+
+        /* --- FOOTER / ABOUT --- */
+        footer {
+            margin-top: 80px;
+            padding: 50px 20px;
+            background-color: #050505;
+            text-align: center;
+            border-top: 1px solid #222;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .glitch-title { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO SECTION -->
+    <header>
+        <div class="glitch-title">ZEROS</div>
+        <p class="subtitle">AI Integrator | Full-Stack Python Developer | UI/UX Designer</p>
+        <div class="badge">Open for Freelance & Projects</div>
+    </header>
+
+    <!-- PROJECTS SECTION -->
+    <h2 class="section-title">My Arsenal</h2>
+    <div class="projects-grid">
+
+        <!-- PROJECT 1: APEX TITAN -->
+        <div class="card">
+            <h3>APEX TITAN</h3>
+            <span class="tag">Python</span><span class="tag">AI/LLM</span><span class="tag">Finance</span>
+            <p>An institutional-grade Desktop Financial Terminal. Features Local AI Analysis (Gemini/Phi-3.5), Live Candlestick Charts, and algorithmic Risk Management to prevent emotional trading.</p>
+            <a href="https://github.com/Zeros-CodeXD/Apex-Titan-AI" class="btn" target="_blank">Get Source Code</a>
+        </div>
+
+        <!-- PROJECT 2: WB-NEXUS -->
+        <div class="card">
+            <h3 style="color: var(--accent-cyan);">WB-NEXUS</h3>
+            <span class="tag">Flet</span><span class="tag">Android APK</span><span class="tag">Education</span>
+            <p>A comprehensive Android app for West Bengal students. Contains a database of 50+ official books, Previous Year Papers, College Seat Tracker, and an integrated AI Tutor.</p>
+            <a href="https://drive.google.com/file/d/1Syisz-DNTzQZJX7BsXseNIXMN3-A1Mfr/view?usp=drive_link" class="btn">Download App (APK)</a>
+        </div>
+
+        <!-- PROJECT 3: NEXUS OSINT -->
+        <div class="card">
+            <h3 style="color: var(--accent-red);">NEXUS OSINT</h3>
+            <span class="tag">Cybersecurity</span><span class="tag">Scraping</span><span class="tag">API</span>
+            <p>A professional Open Source Intelligence (OSINT) suite. Features IP Geolocation, Username Reconnaissance across 50+ platforms, and EXIF Image Forensics.</p>
+            <a href="mailto:ayancvko@gmail.com" class="btn" style="background-color: #333; color: white;">Request Demo</a>
+        </div>
+
+    </div>
+
+    <!-- ABOUT / CONTACT SECTION -->
+    <footer>
+        <h2 style="color: white; margin-bottom: 10px;">About Me</h2>
+        <p>I am a student developer from India specializing in building rapid, high-impact software. While others learn basic syntax, I build and deploy complete end-to-end products using Python, Flet, and Generative AI.</p>
+        <a href="mailto:ayancvko@gmail.com" class="btn" style="background-color: var(--accent-cyan); color: black;">Contact Me: ayancvko@gmail.com</a>
+        <p style="margin-top: 40px; font-size: 0.8rem;">© 2025 ZEROS. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
