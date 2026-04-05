@@ -3,204 +3,374 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEROS | Software & AI Developer</title>
+    <title>ZEROS | Software & AI Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
     <style>
-        /* --- MODERN DARK THEME --- */
+        /* --- GLOBAL VARIABLES --- */
         :root {
-            --bg-color: #0a0a0a;
-            --card-bg: #161616;
-            --accent-cyan: #00e5ff;
-            --accent-red: #ff003c;
-            --text-main: #ffffff;
-            --text-muted: #888888;
+            --bg-base: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --cyan: #00e5ff;
+            --purple: #8a2be2;
+            --text-main: #f0f0f0;
+            --text-muted: #a0a0a0;
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-base);
             color: var(--text-main);
-            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- AMBIENT BACKGROUND GLOW --- */
+        .ambient-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--cyan), transparent 60%);
+            opacity: 0.15;
+            filter: blur(100px);
+            top: -100px;
+            left: -150px;
+            z-index: -1;
+            animation: float 10s infinite alternate;
+        }
+
+        .ambient-glow-2 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--purple), transparent 60%);
+            opacity: 0.15;
+            filter: blur(120px);
+            bottom: 100px;
+            right: -200px;
+            z-index: -1;
+            animation: float 12s infinite alternate-reverse;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(30px) scale(1.1); }
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 10%;
+            animation: fadeInDown 1s ease;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
         }
 
         /* --- HERO SECTION --- */
-        header {
-            height: 100vh;
+        .hero {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: radial-gradient(circle at top, #1a1a1a 0%, var(--bg-color) 70%);
-            border-bottom: 1px solid #333;
+            min-height: 70vh;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease;
         }
 
-        .glitch-title {
-            font-size: 5rem;
-            font-weight: 900;
-            letter-spacing: 5px;
-            color: var(--text-main);
-            text-shadow: 3px 3px var(--accent-cyan), -3px -3px var(--accent-red);
-            margin-bottom: 10px;
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--cyan);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 229, 255, 0.2);
         }
 
-        .subtitle {
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--cyan);
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
             font-size: 1.2rem;
             color: var(--text-muted);
             max-width: 600px;
-            margin-bottom: 20px;
+            font-weight: 300;
         }
 
-        .badge {
-            background-color: rgba(0, 229, 255, 0.1);
-            color: var(--accent-cyan);
-            border: 1px solid var(--accent-cyan);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
+        /* --- PROJECTS SECTION (GLASSMORPHISM) --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
         }
 
-        /* --- PROJECTS SECTION --- */
         .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin: 60px 0 40px 0;
-            color: var(--text-main);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            color: white;
+            display: flex;
+            align-items: center;
         }
 
-        .projects-grid {
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+            margin-left: 20px;
+        }
+
+        .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
         }
 
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid #333;
-            border-radius: 15px;
-            padding: 30px;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 35px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
             transform: translateY(-10px);
-            border-color: var(--accent-cyan);
+            border-color: rgba(0, 229, 255, 0.4);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 229, 255, 0.05);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
         }
 
         .card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            color: var(--text-main);
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .tags {
+            margin-bottom: 20px;
         }
 
         .tag {
             display: inline-block;
-            background: #222;
-            color: var(--accent-cyan);
-            padding: 4px 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            margin-bottom: 15px;
-            margin-right: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .card p {
             color: var(--text-muted);
-            margin-bottom: 25px;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            flex-grow: 1;
         }
 
-        .btn {
+        .card-btn {
             display: inline-block;
-            text-decoration: none;
-            background-color: var(--accent-cyan);
-            color: #000;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #fff;
-        }
-
-        /* --- FOOTER / ABOUT --- */
-        footer {
-            margin-top: 80px;
-            padding: 50px 20px;
-            background-color: #050505;
             text-align: center;
-            border-top: 1px solid #222;
+            padding: 12px 0;
+            width: 100%;
+            background: var(--text-main);
+            color: #000;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
 
-        footer p {
+        .card-btn.outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+        }
+
+        .card-btn:hover {
+            background: var(--cyan);
+            color: #000;
+            border-color: var(--cyan);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: 100px;
+            padding: 50px 20px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-text {
             color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 20px auto;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .glitch-title { font-size: 3.5rem; }
+            .hero h1 { font-size: 3rem; }
+            nav { padding: 20px 5%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HERO SECTION -->
-    <header>
-        <div class="glitch-title">ZEROS</div>
-        <p class="subtitle">AI Integrator | Full-Stack Python Developer | UI/UX Designer</p>
-        <div class="badge">Open for Freelance & Projects</div>
-    </header>
+    <!-- Ambient Glowing Orbs -->
+    <div class="ambient-glow"></div>
+    <div class="ambient-glow-2"></div>
 
-    <!-- PROJECTS SECTION -->
-    <h2 class="section-title">My Arsenal</h2>
-    <div class="projects-grid">
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">ZEROS.</a>
+        <a href="mailto:ayancvko@gmail.com" class="nav-btn">Contact Me</a>
+    </nav>
 
-        <!-- PROJECT 1: APEX TITAN -->
-        <div class="card">
-            <h3>APEX TITAN</h3>
-            <span class="tag">Python</span><span class="tag">AI/LLM</span><span class="tag">Finance</span>
-            <p>An institutional-grade Desktop Financial Terminal. Features Local AI Analysis (Gemini/Phi-3.5), Live Candlestick Charts, and algorithmic Risk Management to prevent emotional trading.</p>
-            <a href="https://github.com/Zeros-CodeXD/Apex-Titan-AI" class="btn" target="_blank">Get Source Code</a>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            Available for Freelance & Projects
         </div>
+        <h1>Building Next-Gen<br>Software & AI.</h1>
+        <p>I am a High School Developer specializing in Desktop Financial Terminals, Android Applications, and Local AI Integration.</p>
+    </section>
 
-        <!-- PROJECT 2: WB-NEXUS -->
-        <div class="card">
-            <h3 style="color: var(--accent-cyan);">WB-NEXUS</h3>
-            <span class="tag">Flet</span><span class="tag">Android APK</span><span class="tag">Education</span>
-            <p>A comprehensive Android app for West Bengal students. Contains a database of 50+ official books, Previous Year Papers, College Seat Tracker, and an integrated AI Tutor.</p>
-            <a href="https://drive.google.com/file/d/1Syisz-DNTzQZJX7BsXseNIXMN3-A1Mfr/view?usp=drive_link" class="btn">Download App (APK)</a>
+    <!-- Projects Portfolio -->
+    <section class="container">
+        <h2 class="section-title">Featured Arsenal</h2>
+        <div class="grid">
+            
+            <!-- APEX TITAN -->
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <h3>APEX TITAN</h3>
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Gemini API</span>
+                    <span class="tag">Finance</span>
+                </div>
+                <p>An institutional-grade desktop trading terminal. Features algorithmic risk calculation, live candlestick rendering, custom screeners, and a Generative AI analyst built-in.</p>
+                <a href="https://github.com/Zeros-CodeXD/Apex-Titan-AI" class="card-btn" target="_blank">Get Source Code</a>
+            </div>
+
+            <!-- WB NEXUS -->
+            <div class="card">
+                <div class="card-icon">🎓</div>
+                <h3>WB-NEXUS</h3>
+                <div class="tags">
+                    <span class="tag">Flet (APK)</span>
+                    <span class="tag">Android</span>
+                    <span class="tag">EdTech</span>
+                </div>
+                <p>A complete Android application for West Bengal students. Integrates 50+ official textbook PDFs, live college admission tracking, and an AI-powered personal tutor.</p>
+                <a href="https://drive.google.com/file/d/1Syisz-DNTzQZJX7BsXseNIXMN3-A1Mfr/view?usp=sharing" class="card-btn outline" target="_blank">Download App</a>
+            </div>
+
+            <!-- NEXUS OSINT -->
+            <div class="card">
+                <div class="card-icon">👁️</div>
+                <h3>NEXUS OSINT</h3>
+                <div class="tags">
+                    <span class="tag">Cybersecurity</span>
+                    <span class="tag">Automation</span>
+                    <span class="tag">OSINT</span>
+                </div>
+                <p>A command-and-control reconnaissance tool. Automates IP Geolocation, social media username enumeration across 400+ platforms, and EXIF metadata extraction.</p>
+                <a href="mailto:ayancvko@gmail.com" class="card-btn outline">Request Demo</a>
+            </div>
+
         </div>
+    </section>
 
-        <!-- PROJECT 3: NEXUS OSINT -->
-        <div class="card">
-            <h3 style="color: var(--accent-red);">NEXUS OSINT</h3>
-            <span class="tag">Cybersecurity</span><span class="tag">Scraping</span><span class="tag">API</span>
-            <p>A professional Open Source Intelligence (OSINT) suite. Features IP Geolocation, Username Reconnaissance across 50+ platforms, and EXIF Image Forensics.</p>
-            <a href="mailto:ayancvko@gmail.com" class="btn" style="background-color: #333; color: white;">Request Demo</a>
-        </div>
-
-    </div>
-
-    <!-- ABOUT / CONTACT SECTION -->
+    <!-- Footer -->
     <footer>
-        <h2 style="color: white; margin-bottom: 10px;">About Me</h2>
-        <p>I am a student developer from India specializing in building rapid, high-impact software. While others learn basic syntax, I build and deploy complete end-to-end products using Python, Flet, and Generative AI.</p>
-        <a href="mailto:ayancvko@gmail.com" class="btn" style="background-color: var(--accent-cyan); color: black;">Contact Me: ayancvko@gmail.com</a>
-        <p style="margin-top: 40px; font-size: 0.8rem;">© 2025 ZEROS. All rights reserved.</p>
+        <p class="footer-text">Architected and Designed by ZEROS.</p>
+        <p class="footer-text" style="font-size: 0.8rem; opacity: 0.5;">© 2026 All Rights Reserved.</p>
     </footer>
 
 </body>
