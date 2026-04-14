@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZEROS | Software & AI Engineer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
+    
     <style>
         /* --- GLOBAL VARIABLES --- */
         :root {
@@ -31,36 +35,15 @@
             position: relative;
         }
 
-        /* --- AMBIENT BACKGROUND GLOW --- */
-        .ambient-glow {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, var(--cyan), transparent 60%);
-            opacity: 0.15;
-            filter: blur(100px);
-            top: -100px;
-            left: -150px;
-            z-index: -1;
-            animation: float 10s infinite alternate;
-        }
-
-        .ambient-glow-2 {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--purple), transparent 60%);
-            opacity: 0.15;
-            filter: blur(120px);
-            bottom: 100px;
-            right: -200px;
-            z-index: -1;
-            animation: float 12s infinite alternate-reverse;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px) scale(1); }
-            100% { transform: translateY(30px) scale(1.1); }
+        /* --- BACKGROUND ANIMATION CANVAS --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
         }
 
         /* --- NAVBAR --- */
@@ -104,7 +87,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            min-height: 70vh;
+            min-height: 60vh;
             padding: 0 20px;
             animation: fadeInUp 1s ease;
         }
@@ -155,7 +138,7 @@
             font-weight: 300;
         }
 
-        /* --- PROJECTS SECTION (GLASSMORPHISM) --- */
+        /* --- SECTIONS & GLASSMORPHISM --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -203,21 +186,34 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 229, 255, 0.05);
         }
 
-        .card-icon {
-            font-size: 2rem;
+        .card-icon { font-size: 2rem; margin-bottom: 20px; }
+        .card h3 { font-size: 1.6rem; margin-bottom: 15px; color: white; }
+        
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        /* --- VIDEO PLACEHOLDER --- */
+        .video-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed var(--glass-border);
+            border-radius: 12px;
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
-        .card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            color: white;
-        }
-
-        .tags {
-            margin-bottom: 20px;
-        }
-
+        /* --- TAGS & BUTTONS --- */
+        .tags { margin-bottom: 20px; }
         .tag {
             display: inline-block;
             background: rgba(255, 255, 255, 0.05);
@@ -228,14 +224,6 @@
             margin-right: 8px;
             margin-bottom: 8px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            flex-grow: 1;
         }
 
         .card-btn {
@@ -250,6 +238,8 @@
             font-size: 0.9rem;
             border-radius: 12px;
             transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
         }
 
         .card-btn.outline {
@@ -265,9 +255,27 @@
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
         }
 
+        /* --- CONTACT FORM --- */
+        .contact-section { max-width: 600px; margin: 0 auto 50px auto; }
+        .contact-form { display: flex; flex-direction: column; gap: 15px; }
+        .contact-form input, .contact-form textarea {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .contact-form textarea { resize: vertical; min-height: 120px; }
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+        }
+
         /* --- FOOTER --- */
         footer {
-            margin-top: 100px;
             padding: 50px 20px;
             text-align: center;
             border-top: 1px solid var(--glass-border);
@@ -291,7 +299,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .hero h1 { font-size: 3rem; }
             nav { padding: 20px 5%; }
@@ -300,78 +307,165 @@
 </head>
 <body>
 
-    <!-- Ambient Glowing Orbs -->
-    <div class="ambient-glow"></div>
-    <div class="ambient-glow-2"></div>
+    <canvas id="bg-canvas"></canvas>
 
-    <!-- Navigation -->
     <nav>
         <a href="#" class="logo">ZEROS.</a>
-        <a href="mailto:ayancvko@gmail.com" class="nav-btn">Contact Me</a>
+        <a href="#contact" class="nav-btn">Hire Me</a>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="status-badge">
             <div class="status-dot"></div>
             Available for Freelance & Projects
         </div>
         <h1>Building Next-Gen<br>Software & AI.</h1>
-        <p>I am a High School Developer specializing in Desktop Financial Terminals, Android Applications, and Local AI Integration.</p>
+        <p>I build custom data scrapers, AI chatbots, and desktop automation tools that save businesses time and money.</p>
     </section>
 
-    <!-- Projects Portfolio -->
     <section class="container">
-        <h2 class="section-title">Featured Arsenal</h2>
+        <h2 class="section-title">What I Can Build For You</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">🎯</div>
+                <h3>Lead Gen & Scraping</h3>
+                <p>Automated scripts that extract targeted business leads, emails, and competitor data from across the web daily.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🤖</div>
+                <h3>Custom AI Agents</h3>
+                <p>AI chatbots embedded directly into your website, trained on your specific business data to handle customer support 24/7.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Business Dashboards</h3>
+                <p>Private desktop applications that connect to your databases to visualize your inventory, sales, and analytics in real-time.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <h2 class="section-title">My Arsenal (Live Demos)</h2>
         <div class="grid">
             
-            <!-- APEX TITAN -->
             <div class="card">
-                <div class="card-icon">📈</div>
+                <div class="video-placeholder">YouTube Video Demo Placeholder</div>
                 <h3>APEX TITAN</h3>
                 <div class="tags">
                     <span class="tag">Python</span>
                     <span class="tag">Gemini API</span>
-                    <span class="tag">Finance</span>
+                    <span class="tag">Finance Dashboard</span>
                 </div>
-                <p>An institutional-grade desktop trading terminal. Features algorithmic risk calculation, live candlestick rendering, custom screeners, and a Generative AI analyst built-in.</p>
-                <a href="https://github.com/Zeros-CodeXD/Apex-Titan-AI" class="card-btn" target="_blank">Get Source Code</a>
+                <p>An institutional-grade desktop trading terminal. Features live candlestick rendering and a Generative AI analyst built-in.</p>
+                <a href="https://github.com/Zeros-CodeXD/Apex-Titan-AI" class="card-btn outline" target="_blank">View Code</a>
             </div>
 
-            <!-- WB NEXUS -->
             <div class="card">
-                <div class="card-icon">🎓</div>
-                <h3>WB-NEXUS</h3>
-                <div class="tags">
-                    <span class="tag">Flet (APK)</span>
-                    <span class="tag">Android</span>
-                    <span class="tag">EdTech</span>
-                </div>
-                <p>A complete Android application for West Bengal students. Integrates 30+ official textbook PDFs, live college admission tracking, and an AI-powered personal tutor.</p>
-                <a href="https://drive.google.com/file/d/1Syisz-DNTzQZJX7BsXseNIXMN3-A1Mfr/view?usp=sharing" class="card-btn outline" target="_blank">Download App</a>
-            </div>
-
-            <!-- NEXUS OSINT -->
-            <div class="card">
-                <div class="card-icon">👁️</div>
+                <div class="video-placeholder">YouTube Video Demo Placeholder</div>
                 <h3>NEXUS OSINT</h3>
                 <div class="tags">
-                    <span class="tag">Cybersecurity</span>
+                    <span class="tag">Data Extraction</span>
                     <span class="tag">Automation</span>
-                    <span class="tag">OSINT</span>
+                    <span class="tag">Python</span>
                 </div>
-                <p>A command-and-control reconnaissance tool. Automates IP Geolocation, social media username enumeration across 400+ platforms, and EXIF metadata extraction.</p>
-                <a href="mailto:ayancvko@gmail.com" class="card-btn outline">Request Demo</a>
+                <p>A command-and-control reconnaissance tool. Automates IP Geolocation and data extraction across 400+ platforms.</p>
+                <a href="#contact" class="card-btn outline">Request Custom Scraper</a>
+            </div>
+
+            <div class="card">
+                <div class="video-placeholder">YouTube Video Demo Placeholder</div>
+                <h3>CYAN AI Assistant</h3>
+                <div class="tags">
+                    <span class="tag">Local LLM</span>
+                    <span class="tag">Speech-to-Text</span>
+                    <span class="tag">UI/UX</span>
+                </div>
+                <p>A completely offline, voice-activated AI assistant capable of reasoning, coding, and saving context to a local vault.</p>
+                <a href="#contact" class="card-btn outline">Request Custom Bot</a>
             </div>
 
         </div>
     </section>
 
-    <!-- Footer -->
+    <section class="container contact-section" id="contact">
+        <h2 class="section-title" style="justify-content: center;">Let's Work Together</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Need custom software? Send me a message and I'll get back to you within 24 hours.</p>
+        
+        <form class="contact-form" action="https://formspree.io/f/mbdqlgbv" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Tell me about your project..." required></textarea>
+            <button type="submit" class="card-btn">Send Message</button>
+        </form>
+    </section>
+
     <footer>
         <p class="footer-text">Architected and Designed by ZEROS.</p>
         <p class="footer-text" style="font-size: 0.8rem; opacity: 0.5;">© 2026 All Rights Reserved.</p>
     </footer>
 
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2.5 + 0.5;
+                // Move horizontally like fish swimming
+                this.speedX = Math.random() * 1.5 + 0.5;
+                this.offset = Math.random() * 100;
+            }
+            update() {
+                this.x += this.speedX;
+                // Add a slight wave motion
+                this.y += Math.sin(this.x * 0.01 + this.offset) * 0.5;
+
+                if (this.x > width + 10) {
+                    this.x = -10;
+                    this.y = Math.random() * height;
+                }
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 229, 255, 0.3)'; // Cyan color
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 40; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Add a subtle ambient glow to the background
+            let gradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width);
+            gradient.addColorStop(0, 'rgba(0, 229, 255, 0.02)');
+            gradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
 </html>
