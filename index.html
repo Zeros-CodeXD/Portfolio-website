@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
     
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
     <style>
         /* --- GLOBAL VARIABLES --- */
         :root {
@@ -255,25 +257,6 @@
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
         }
 
-        /* --- CONTACT FORM --- */
-        .contact-section { max-width: 600px; margin: 0 auto 50px auto; }
-        .contact-form { display: flex; flex-direction: column; gap: 15px; }
-        .contact-form input, .contact-form textarea {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        .contact-form textarea { resize: vertical; min-height: 120px; }
-        .contact-form input:focus, .contact-form textarea:focus {
-            outline: none;
-            border-color: var(--cyan);
-            box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
-        }
-
         /* --- FOOTER --- */
         footer {
             padding: 50px 20px;
@@ -289,7 +272,157 @@
             margin-bottom: 10px;
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- CHATBOT WIDGET STYLES --- */
+        #chatbot-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            font-size: 24px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #chatbot-toggle:hover {
+            transform: scale(1.1);
+            background: var(--cyan);
+            color: black;
+        }
+
+        #chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            z-index: 999;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            overflow: hidden;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: rgba(0, 229, 255, 0.05);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-size: 1.1rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-chat {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .close-chat:hover {
+            color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            border-bottom-left-radius: 2px;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .chat-input input:focus {
+            border-color: var(--cyan);
+        }
+
+        .chat-input button {
+            background: var(--cyan);
+            border: none;
+            color: black;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-input button:hover {
+            opacity: 0.8;
+        }
+
+        /* Custom Scrollbar for chat */
+        .chat-messages::-webkit-scrollbar { width: 5px; }
+        .chat-messages::-webkit-scrollbar-track { background: transparent; }
+        .chat-messages::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -302,6 +435,17 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 3rem; }
             nav { padding: 20px 5%; }
+            #chat-window {
+                bottom: 0;
+                right: 0;
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+            }
+            #chatbot-toggle {
+                bottom: 20px;
+                right: 20px;
+            }
         }
     </style>
 </head>
@@ -311,7 +455,7 @@
 
     <nav>
         <a href="#" class="logo">ZEROS.</a>
-        <a href="#contact" class="nav-btn">Hire Me</a>
+        <a href="#" class="nav-btn" onclick="toggleChat()">Hire Me</a>
     </nav>
 
     <section class="hero">
@@ -381,22 +525,10 @@
                     <span class="tag">UI/UX</span>
                 </div>
                 <p>A completely offline, voice-activated AI assistant capable of reasoning, coding, and saving context to a local vault.</p>
-                <a href="#contact" class="card-btn outline">Request Custom Bot</a>
+                <a href="#" class="card-btn outline" onclick="toggleChat(); return false;">Request Custom Bot</a>
             </div>
 
         </div>
-    </section>
-
-    <section class="container contact-section" id="contact">
-        <h2 class="section-title" style="justify-content: center;">Let's Work Together</h2>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Need custom software? Send me a message and I'll get back to you within 24 hours.</p>
-        
-        <form class="contact-form" action="https://formspree.io/f/mbdqlgbv" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" placeholder="Tell me about your project..." required></textarea>
-            <button type="submit" class="card-btn">Send Message</button>
-        </form>
     </section>
 
     <footer>
@@ -404,10 +536,25 @@
         <p class="footer-text" style="font-size: 0.8rem; opacity: 0.5;">© 2026 All Rights Reserved.</p>
     </footer>
 
+    <button id="chatbot-toggle" onclick="toggleChat()">🤖</button>
+
+    <div id="chat-window">
+        <div class="chat-header">
+            <h3><div class="status-dot"></div> ZEROS Assistant</h3>
+            <button class="close-chat" onclick="toggleChat()">✕</button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input-field" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+            <button onclick="handleUserInput()">Send</button>
+        </div>
+    </div>
+
     <script>
+        // --- 1. BACKGROUND CANVAS ANIMATION ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-
         let width, height;
         let particles = [];
 
@@ -423,49 +570,174 @@
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
                 this.size = Math.random() * 2.5 + 0.5;
-                // Move horizontally like fish swimming
                 this.speedX = Math.random() * 1.5 + 0.5;
                 this.offset = Math.random() * 100;
             }
             update() {
                 this.x += this.speedX;
-                // Add a slight wave motion
                 this.y += Math.sin(this.x * 0.01 + this.offset) * 0.5;
-
                 if (this.x > width + 10) {
                     this.x = -10;
                     this.y = Math.random() * height;
                 }
             }
             draw() {
-                ctx.fillStyle = 'rgba(0, 229, 255, 0.3)'; // Cyan color
+                ctx.fillStyle = 'rgba(0, 229, 255, 0.3)';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        for (let i = 0; i < 40; i++) {
-            particles.push(new Particle());
-        }
+        for (let i = 0; i < 40; i++) { particles.push(new Particle()); }
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
-            
-            // Add a subtle ambient glow to the background
             let gradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width);
             gradient.addColorStop(0, 'rgba(0, 229, 255, 0.02)');
             gradient.addColorStop(1, 'transparent');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, width, height);
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
         animate();
+
+
+        // --- 2. CHATBOT STATE MACHINE & LOGIC ---
+        
+        // CONFIGURATION: ADD YOUR EMAILJS KEYS HERE
+        // Sign up at emailjs.com to get these
+        const EMAILJS_PUBLIC_KEY = "Zk6PCJMaAPw0NtCX7";
+        const EMAILJS_SERVICE_ID = "service_z8bo14l";
+        const EMAILJS_TEMPLATE_ID = "template_osxy5un";
+        
+        // Initialize EmailJS
+        (function() { emailjs.init(EMAILJS_PUBLIC_KEY); })();
+
+        const chatWindow = document.getElementById('chat-window');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input-field');
+        
+        let isChatOpen = false;
+        let chatState = "GREETING"; // States: GREETING, NAME, EMAIL, PROJECT, DONE
+        
+        // Payload to send to Gmail
+        let ticketPayload = {
+            name: "",
+            email: "",
+            project_details: "",
+            ip_address: "Fetching..."
+        };
+
+        function toggleChat() {
+            isChatOpen = !isChatOpen;
+            chatWindow.style.display = isChatOpen ? 'flex' : 'none';
+            if(isChatOpen && chatMessages.children.length === 0) {
+                addBotMessage("System Initialized. I am Zeros' automated assistant. Are you looking to hire Zeros for a custom software project? (Yes/No)");
+            }
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') handleUserInput();
+        }
+
+        function addUserMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'message user';
+            div.innerText = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'message bot';
+            div.innerText = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function fetchUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return "IP Capture Failed";
+            }
+        }
+
+        async function handleUserInput() {
+            const text = chatInput.value.trim();
+            if(!text) return;
+            
+            addUserMessage(text);
+            chatInput.value = '';
+            chatInput.disabled = true; // Prevent double typing
+
+            // State Machine Routing
+            setTimeout(async () => {
+                if (chatState === "GREETING") {
+                    if (text.toLowerCase().includes("yes") || text.toLowerCase().includes("y")) {
+                        addBotMessage("Excellent. To craft a secure ticket for Zeros, please provide your Name.");
+                        chatState = "NAME";
+                    } else {
+                        addBotMessage("Understood. I am here if you have any technical inquiries later. Have a good day.");
+                        chatState = "DONE";
+                    }
+                } 
+                else if (chatState === "NAME") {
+                    ticketPayload.name = text;
+                    addBotMessage(`Thank you, ${text}. What is the best Email Address to reach you at?`);
+                    chatState = "EMAIL";
+                } 
+                else if (chatState === "EMAIL") {
+                    // Simple email validation
+                    if(text.includes("@") && text.includes(".")) {
+                        ticketPayload.email = text;
+                        addBotMessage("Email verified. Finally, briefly describe the software, scraper, or AI agent you need built.");
+                        chatState = "PROJECT";
+                    } else {
+                        addBotMessage("That doesn't look like a valid email. Please try again.");
+                    }
+                } 
+                else if (chatState === "PROJECT") {
+                    ticketPayload.project_details = text;
+                    addBotMessage("Processing inquiry... Verifying secure connection...");
+                    
+                    // Fetch IP securely
+                    ticketPayload.ip_address = await fetchUserIP();
+                    
+                    // Send to Gmail via EmailJS
+                    sendTicketToGmail();
+                }
+
+                chatInput.disabled = (chatState === "DONE");
+                if(chatState !== "DONE") chatInput.focus();
+                
+            }, 500); // Artificial delay to feel natural
+        }
+
+        function sendTicketToGmail() {
+            // Check if user actually put their keys in
+            if(EMAILJS_PUBLIC_KEY === "Zk6PCJMaAPw0NtCX7") {
+                addBotMessage("[WARNING: EmailJS keys not configured. This is a local simulation. Ticket logged to console only.]");
+                console.log("TICKET PAYLOAD:", ticketPayload);
+                chatState = "DONE";
+                return;
+            }
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, ticketPayload)
+            .then(() => {
+                addBotMessage("Encrypted ticket dispatched to Zeros' terminal successfully. He will review your IP logs and inquiry and contact you shortly.");
+                chatState = "DONE";
+            }, (error) => {
+                addBotMessage("System Error: Failed to route ticket. Please reach out via GitHub.");
+                console.error("EmailJS Error:", error);
+                chatState = "DONE";
+            });
+        }
     </script>
 </body>
 </html>
