@@ -352,6 +352,7 @@
             border-radius: 12px;
             font-size: 0.9rem;
             line-height: 1.5;
+            word-wrap: break-word;
         }
 
         .message.bot {
@@ -407,6 +408,16 @@
         .chat-messages::-webkit-scrollbar { width: 5px; }
         .chat-messages::-webkit-scrollbar-track { background: transparent; }
         .chat-messages::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+        /* Typing indicator */
+        .typing {
+            align-self: flex-start;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-style: italic;
+            padding: 0 10px;
+            display: none;
+        }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -518,13 +529,14 @@
 
     <div id="chat-window">
         <div class="chat-header">
-            <h3><div class="status-dot" style="background: var(--gold); box-shadow: 0 0 10px var(--gold);"></div> Zeros.AI Matrix</h3>
+            <h3><div class="status-dot" style="background: var(--gold); box-shadow: 0 0 10px var(--gold);"></div> ZerosProt</h3>
             <button class="close-chat" onclick="toggleChat()">✕</button>
         </div>
         <div class="chat-messages" id="chat-messages">
             </div>
+        <div class="typing" id="typing-indicator">ZerosProt is thinking...</div>
         <div class="chat-input">
-            <input type="text" id="chat-input-field" placeholder="Ask about Zeros or type 'ticket'..." onkeypress="handleKeyPress(event)">
+            <input type="text" id="chat-input-field" placeholder="Ask anything or type 'hire'..." onkeypress="handleKeyPress(event)">
             <button onclick="handleUserInput()">Send</button>
         </div>
     </div>
@@ -582,20 +594,36 @@
         animate();
 
 
-        // --- 2. INTENT-DRIVEN CHATBOT (FAQ + TICKETS) ---
+        // --- 2. ZEROSPROT LLM & TICKET SYSTEM ---
+        
+        // --- CONFIGURATION ---
+        // SECURITY WARNING: Ensure your Gemini API key is HTTP Referrer Restricted in Google Cloud!
+        const GEMINI_API_KEY = "AIzaSyAjvBqHuJP4TPWpk6690RfG04fH2l6lWoI"; 
         
         const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY_HERE";
-        const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID_HERE";
-        const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID_HERE";
+        const EMAILJS_SERVICE_ID = "service_z8bo14l";
+        const EMAILJS_TEMPLATE_ID = "template_osxy5un";
         
         (function() { emailjs.init(EMAILJS_PUBLIC_KEY); })();
+
+        // --- THE SYSTEM PROMPT ---
+        // This governs ZerosProt's behavior. It acts as the boundary.
+        const SYSTEM_INSTRUCTION = `You are ZerosProt, the official AI assistant for Zeros, a 16-year-old software and AI engineer. 
+Your tone is professional, architectural, slightly blunt, and highly knowledgeable. 
+Zeros builds B2B tools: Data Scrapers (NEXUS OSINT), CustomTkinter dashboards (APEX TITAN), local voice LLMs (CYAN AI), and clean entry/mid-level web development (HTML/JS/Python).
+He has over a year of intensive experience. Trust is built on his public GitHub code (Zeros-CodeXD).
+RULE 1: Answer questions related to software engineering, AI, Zeros' tech stack, and his portfolio. 
+RULE 2: If the user asks about off-topic things (e.g., movies, pop culture, irrelevant trivia, or inappropriate topics), politely decline and steer the conversation back to tech or hiring Zeros.
+RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ticket, you MUST include the exact string '[START_TICKET]' in your response. Keep your reply brief when triggering this.`;
 
         const chatWindow = document.getElementById('chat-window');
         const chatMessages = document.getElementById('chat-messages');
         const chatInput = document.getElementById('chat-input-field');
+        const typingIndicator = document.getElementById('typing-indicator');
         
         let isChatOpen = false;
-        let chatState = "GREETING"; // States: GREETING (FAQ mode), NAME, EMAIL, PROJECT, DONE
+        let chatState = "LLM_MODE"; // States: LLM_MODE, NAME, EMAIL, PROJECT, DONE
+        let chatHistory = [];
         
         let ticketPayload = {
             name: "",
@@ -608,7 +636,7 @@
             isChatOpen = !isChatOpen;
             chatWindow.style.display = isChatOpen ? 'flex' : 'none';
             if(isChatOpen && chatMessages.children.length === 0) {
-                addBotMessage("System Initialized. I am Zeros' automated assistant. You can ask me about his experience, tech stack, and portfolio. \n\nOr, type 'ticket' to start a project inquiry.");
+                addBotMessage("System Initialized. I am ZerosProt, the AI architecture handling this domain. \n\nI can answer any deep technical questions about Zeros' stack, experience, and B2B projects. Or, tell me you want to start a project.");
             }
         }
 
@@ -642,78 +670,102 @@
             }
         }
 
+        // --- GEMINI API CALL ---
+        async function askGemini(userMessage) {
+            typingIndicator.style.display = 'block';
+            chatInput.disabled = true;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            
+            // Maintain a short history for context, plus the current message
+            const contents = chatHistory.concat([{ role: "user", parts: [{ text: userMessage }] }]);
+
+            const payload = {
+                systemInstruction: {
+                    parts: [{ text: SYSTEM_INSTRUCTION }]
+                },
+                contents: contents
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error.message || "API Error");
+
+                let botResponse = data.candidates[0].content.parts[0].text;
+
+                // Save to history
+                chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+                chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
+
+                // Intent Handoff: Check for the secret trigger word
+                if (botResponse.includes("[START_TICKET]")) {
+                    botResponse = botResponse.replace("[START_TICKET]", "").trim();
+                    if(botResponse) addBotMessage(botResponse);
+                    
+                    setTimeout(() => {
+                        addBotMessage("To craft a secure ticket for Zeros, please provide your Name.");
+                        chatState = "NAME";
+                        typingIndicator.style.display = 'none';
+                        chatInput.disabled = false;
+                        chatInput.focus();
+                    }, 800);
+                    return;
+                }
+
+                addBotMessage(botResponse);
+
+            } catch (error) {
+                console.error("Gemini Error:", error);
+                addBotMessage("Connection to ZerosProt neural net lost. Please ensure API keys are active.");
+            } finally {
+                typingIndicator.style.display = 'none';
+                if(chatState === "LLM_MODE") {
+                    chatInput.disabled = false;
+                    chatInput.focus();
+                }
+            }
+        }
+
         async function handleUserInput() {
             const text = chatInput.value.trim();
             if(!text) return;
             
             addUserMessage(text);
             chatInput.value = '';
-            chatInput.disabled = true; 
-
-            const lowerText = text.toLowerCase();
-
-            setTimeout(async () => {
-                // --- FAQ ROUTING MODE ---
-                if (chatState === "GREETING") {
-                    
-                    // Trigger Ticket System
-                    if (lowerText.includes("ticket") || lowerText.includes("hire") || lowerText.includes("project")) {
-                        addBotMessage("Excellent. To craft a secure ticket for Zeros, please provide your Name.");
-                        chatState = "NAME";
-                    } 
-                    // FAQ: Age & Trust
-                    else if (lowerText.includes("age") || lowerText.includes("old") || lowerText.includes("trust")) {
-                        addBotMessage("Zeros is 16 years old. While young, his portfolio of asynchronous B2B software, OSINT engines, and local AI agents demonstrates a senior-level architectural understanding. Trust is built on shipping working, error-free software—which you can verify on his GitHub (Zeros-CodeXD).");
-                    } 
-                    // FAQ: Experience
-                    else if (lowerText.includes("experience") || lowerText.includes("how long")) {
-                        addBotMessage("Zeros has over a year of highly intensive, focused experience architecting complex systems—ranging from data scrapers that bypass anti-bot tech, to fully offline voice-activated AI assistants.");
-                    } 
-                    // FAQ: Projects
-                    else if (lowerText.includes("projects") || lowerText.includes("built") || lowerText.includes("portfolio")) {
-                        addBotMessage("His flagship projects include NEXUS OSINT (a multi-threaded data extraction engine), APEX TITAN (an AI-powered trading terminal), and CYAN AI (a local voice assistant).");
-                    } 
-                    // FAQ: Tech Stack
-                    else if (lowerText.includes("tech") || lowerText.includes("stack") || lowerText.includes("skills")) {
-                        addBotMessage("His core stack includes Python (Asyncio, BeautifulSoup, CustomTkinter), Frontend UI (HTML, CSS, JS), and AI Integration (Gemini API, RAG Pipelines, Local LLMs).");
-                    } 
-                    // FAQ: Web Development
-                    else if (lowerText.includes("web") || lowerText.includes("site")) {
-                        addBotMessage("Yes! Alongside complex B2B software, Zeros builds highly optimized, clean entry-to-mid level websites using modern HTML/CSS/JS and Python backends.");
-                    } 
-                    // FAQ: Fallback
-                    else {
-                        addBotMessage("I am an automated knowledge base. You can ask about Zeros' age, experience, tech stack, or projects. \n\nIf you want to hire him, simply type 'ticket'.");
-                    }
-                } 
-                
-                // --- TICKET STATE MACHINE MODE ---
-                else if (chatState === "NAME") {
-                    ticketPayload.name = text;
-                    addBotMessage(`Thank you, ${text}. What is the best Email Address to reach you at?`);
-                    chatState = "EMAIL";
-                } 
-                else if (chatState === "EMAIL") {
-                    if(text.includes("@") && text.includes(".")) {
-                        ticketPayload.email = text;
-                        addBotMessage("Email verified. Finally, briefly describe the software, scraper, or website you need built.");
-                        chatState = "PROJECT";
-                    } else {
-                        addBotMessage("That doesn't look like a valid email. Please try again.");
-                    }
-                } 
-                else if (chatState === "PROJECT") {
-                    ticketPayload.project_details = text;
-                    addBotMessage("Processing inquiry... Verifying secure connection...");
-                    
-                    ticketPayload.ip_address = await fetchUserIP();
-                    sendTicketToGmail();
+            
+            if (chatState === "LLM_MODE") {
+                // Let Gemini handle the conversation
+                await askGemini(text);
+            } 
+            else if (chatState === "NAME") {
+                ticketPayload.name = text;
+                addBotMessage(`Thank you, ${text}. What is the best Email Address to reach you at?`);
+                chatState = "EMAIL";
+            } 
+            else if (chatState === "EMAIL") {
+                if(text.includes("@") && text.includes(".")) {
+                    ticketPayload.email = text;
+                    addBotMessage("Email verified. Finally, briefly describe the software, scraper, or website you need built.");
+                    chatState = "PROJECT";
+                } else {
+                    addBotMessage("That doesn't look like a valid email. Please try again.");
                 }
-
-                chatInput.disabled = (chatState === "DONE");
-                if(chatState !== "DONE") chatInput.focus();
+            } 
+            else if (chatState === "PROJECT") {
+                ticketPayload.project_details = text;
+                chatInput.disabled = true;
+                addBotMessage("Processing inquiry... Verifying secure connection...");
                 
-            }, 600); // Artificial delay to mimic typing
+                ticketPayload.ip_address = await fetchUserIP();
+                sendTicketToGmail();
+            }
         }
 
         function sendTicketToGmail() {
