@@ -675,7 +675,7 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
             typingIndicator.style.display = 'block';
             chatInput.disabled = true;
 
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
             
             // Maintain a short history for context, plus the current message
             const contents = chatHistory.concat([{ role: "user", parts: [{ text: userMessage }] }]);
