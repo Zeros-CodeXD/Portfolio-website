@@ -52,7 +52,7 @@
             pointer-events: none;
         }
 
-        /* --- NAVBAR --- */
+        /* --- NAVBAR & RGB LOGO --- */
         nav {
             display: flex;
             justify-content: space-between;
@@ -61,16 +61,27 @@
             animation: fadeInDown 1s ease;
         }
 
+        @keyframes rgb-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .logo {
             font-weight: 800;
             font-size: 1.5rem;
             letter-spacing: 2px;
-            color: white;
             text-decoration: none;
+            /* RGB Gaming Color Effect */
+            background: linear-gradient(270deg, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rgb-shift 6s ease infinite;
         }
         
         .logo span {
-            color: var(--gold);
+            -webkit-text-fill-color: var(--gold); /* Keep the period gold for branding */
         }
 
         .nav-btn {
@@ -274,18 +285,18 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 65px;
-            height: 65px;
+            width: 50px; /* Reduced from 65px */
+            height: 50px; /* Reduced from 65px */
             border-radius: 50%;
             background: var(--glass-bg);
             border: 2px solid var(--gold);
             color: var(--gold);
-            font-size: 32px;
+            font-size: 22px; /* Reduced from 32px */
             font-weight: 800;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
             backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.15); /* Slightly softer shadow */
             z-index: 1000;
             transition: all 0.3s ease;
             display: flex;
@@ -297,12 +308,12 @@
         #chatbot-toggle:hover {
             transform: scale(1.1);
             background: rgba(255, 215, 0, 0.1);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
         }
 
         #chat-window {
             position: fixed;
-            bottom: 110px;
+            bottom: 95px; /* Adjusted to match smaller button */
             right: 30px;
             width: 380px;
             height: 550px;
@@ -576,11 +587,9 @@
                 this.color = Math.random() > 0.8 ? 'rgba(255, 215, 0, 0.15)' : 'rgba(0, 229, 255, 0.15)';
             }
             update() {
-                // Swimming motion calculation
                 this.x += this.speedX;
                 this.y += this.speedY + Math.sin(this.x * 0.02 + this.offset) * 0.3;
                 
-                // Screen wrapping
                 if (this.x > width + 50) this.x = -50;
                 if (this.x < -50) this.x = width + 50;
                 if (this.y > height + 50) this.y = -50;
@@ -589,7 +598,6 @@
             draw() {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
-                // Draw an elongated diamond (sleek digital fish profile)
                 let dir = this.speedX > 0 ? 1 : -1;
                 ctx.moveTo(this.x + (this.length * dir), this.y);
                 ctx.lineTo(this.x, this.y - 3);
@@ -600,7 +608,6 @@
             }
         }
 
-        // Spawn the school of digital fish
         for (let i = 0; i < 45; i++) { fishSwarm.push(new DigitalFish()); }
 
         function animate() {
@@ -619,10 +626,12 @@
 
         // --- 2. ZEROSPROT LLM & TICKET SYSTEM ---
         
+        // !--- INSERT YOUR NEW GEMINI API KEY HALVES HERE ---!
         const keyPart1 = "AIzaSyAZ55S4FlgcT"; 
         const keyPart2 = "f4d12dY_1Uo289BEkF7b10";
         const GEMINI_API_KEY = keyPart1 + keyPart2;
         
+        // Your provided EmailJS Credentials
         const EMAILJS_PUBLIC_KEY = "Zk6PCJMaAPw0NtCX7";
         const EMAILJS_SERVICE_ID = "service_z8bo14l";
         const EMAILJS_TEMPLATE_ID = "template_osxy5un";
@@ -767,9 +776,21 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
                 await askGemini(text);
             } 
             else if (chatState === "NAME") {
-                ticketPayload.name = text;
-                addBotMessage(`Thank you, **${text}**. What is the best Email Address to reach you at?`);
-                chatState = "EMAIL";
+                // Name Validation Logic
+                let lowerText = text.toLowerCase();
+                let invalidPhrases = ["idk", "i don't know", "i dont know", "i like that", "no", "yes", "none", "anonymous", "what", "why"];
+                let isValid = true;
+                
+                if (text.length < 2 || text.length > 40) isValid = false;
+                if (invalidPhrases.some(phrase => lowerText === phrase || lowerText.includes("i don't"))) isValid = false;
+
+                if (isValid) {
+                    ticketPayload.name = text;
+                    addBotMessage(`Thank you, **${text}**. What is the best Email Address to reach you at?`);
+                    chatState = "EMAIL";
+                } else {
+                    addBotMessage("That doesn't look like a valid name. Please provide your actual name or company name to proceed.");
+                }
             } 
             else if (chatState === "EMAIL") {
                 if(text.includes("@") && text.includes(".")) {
