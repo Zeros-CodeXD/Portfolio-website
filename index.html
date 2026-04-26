@@ -600,7 +600,7 @@
         // SECURITY WARNING: Ensure your Gemini API key is HTTP Referrer Restricted in Google Cloud!
         const GEMINI_API_KEY = "AIzaSyAjvBqHuJP4TPWpk6690RfG04fH2l6lWoI"; 
         
-        const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY_HERE";
+        const EMAILJS_PUBLIC_KEY = "Zk6PCJMaAPw0NtCX7";
         const EMAILJS_SERVICE_ID = "service_z8bo14l";
         const EMAILJS_TEMPLATE_ID = "template_osxy5un";
         
@@ -769,7 +769,7 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
         }
 
         function sendTicketToGmail() {
-            if(EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE") {
+            if(EMAILJS_PUBLIC_KEY === "Zk6PCJMaAPw0NtCX7") {
                 addBotMessage("[WARNING: EmailJS keys not configured. This is a local simulation. Ticket logged to console.]");
                 console.log("TICKET PAYLOAD:", ticketPayload);
                 chatState = "DONE";
