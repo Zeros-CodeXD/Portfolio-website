@@ -23,6 +23,10 @@
             --text-muted: #a0a0a0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -78,12 +82,14 @@
             text-decoration: none;
             font-size: 0.9rem;
             transition: all 0.3s ease;
+            will-change: transform, box-shadow;
         }
 
         .nav-btn:hover {
             border-color: var(--cyan);
             color: var(--cyan);
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         /* --- HERO SECTION --- */
@@ -184,6 +190,7 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
+            will-change: transform, border-color;
         }
 
         .card:hover {
@@ -231,6 +238,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             border: none;
+            will-change: background, box-shadow;
         }
 
         .card-btn.outline {
@@ -283,6 +291,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            will-change: transform;
         }
 
         #chatbot-toggle:hover {
@@ -333,6 +342,7 @@
             color: var(--text-muted);
             font-size: 1.2rem;
             cursor: pointer;
+            transition: color 0.2s;
         }
 
         .close-chat:hover { color: white; }
@@ -351,7 +361,7 @@
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.6;
             word-wrap: break-word;
         }
 
@@ -388,6 +398,7 @@
             color: white;
             font-size: 0.9rem;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         .chat-input input:focus { border-color: var(--gold); }
@@ -409,7 +420,6 @@
         .chat-messages::-webkit-scrollbar-track { background: transparent; }
         .chat-messages::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
 
-        /* Typing indicator */
         .typing {
             align-self: flex-start;
             color: var(--text-muted);
@@ -542,11 +552,11 @@
     </div>
 
     <script>
-        // --- 1. BACKGROUND CANVAS ANIMATION ---
+        // --- 1. AUTONOMOUS DIGITAL SWARM (THE "TECH FISH") ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
-        let particles = [];
+        let fishSwarm = [];
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -555,31 +565,43 @@
         window.addEventListener('resize', resize);
         resize();
 
-        class Particle {
+        class DigitalFish {
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2.5 + 0.5;
-                this.speedX = Math.random() * 1.5 + 0.5;
+                this.length = Math.random() * 20 + 10;
+                this.speedX = (Math.random() * 1.5 + 0.5) * (Math.random() > 0.5 ? 1 : -1);
+                this.speedY = Math.random() * 0.5 - 0.25;
                 this.offset = Math.random() * 100;
+                this.color = Math.random() > 0.8 ? 'rgba(255, 215, 0, 0.15)' : 'rgba(0, 229, 255, 0.15)';
             }
             update() {
+                // Swimming motion calculation
                 this.x += this.speedX;
-                this.y += Math.sin(this.x * 0.01 + this.offset) * 0.5;
-                if (this.x > width + 10) {
-                    this.x = -10;
-                    this.y = Math.random() * height;
-                }
+                this.y += this.speedY + Math.sin(this.x * 0.02 + this.offset) * 0.3;
+                
+                // Screen wrapping
+                if (this.x > width + 50) this.x = -50;
+                if (this.x < -50) this.x = width + 50;
+                if (this.y > height + 50) this.y = -50;
+                if (this.y < -50) this.y = height + 50;
             }
             draw() {
-                ctx.fillStyle = 'rgba(0, 229, 255, 0.2)';
+                ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                // Draw an elongated diamond (sleek digital fish profile)
+                let dir = this.speedX > 0 ? 1 : -1;
+                ctx.moveTo(this.x + (this.length * dir), this.y);
+                ctx.lineTo(this.x, this.y - 3);
+                ctx.lineTo(this.x - (this.length * 0.5 * dir), this.y);
+                ctx.lineTo(this.x, this.y + 3);
+                ctx.closePath();
                 ctx.fill();
             }
         }
 
-        for (let i = 0; i < 40; i++) { particles.push(new Particle()); }
+        // Spawn the school of digital fish
+        for (let i = 0; i < 45; i++) { fishSwarm.push(new DigitalFish()); }
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
@@ -588,7 +610,8 @@
             gradient.addColorStop(1, 'transparent');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
+            
+            fishSwarm.forEach(fish => { fish.update(); fish.draw(); });
             requestAnimationFrame(animate);
         }
         animate();
@@ -596,10 +619,8 @@
 
         // --- 2. ZEROSPROT LLM & TICKET SYSTEM ---
         
-        // --- CONFIGURATION ---
-        // SECURITY WARNING: Ensure your Gemini API key is HTTP Referrer Restricted in Google Cloud!
-        const keyPart1 = "AIzaSyCoUImuLkZfW"; 
-        const keyPart2 = "SGesxM5Q8iZcj24nUc204Y";
+        const keyPart1 = "AIzaSyAZ55S4FlgcT"; 
+        const keyPart2 = "f4d12dY_1Uo289BEkF7b10";
         const GEMINI_API_KEY = keyPart1 + keyPart2;
         
         const EMAILJS_PUBLIC_KEY = "Zk6PCJMaAPw0NtCX7";
@@ -608,8 +629,6 @@
         
         (function() { emailjs.init(EMAILJS_PUBLIC_KEY); })();
 
-        // --- THE SYSTEM PROMPT ---
-        // This governs ZerosProt's behavior. It acts as the boundary.
         const SYSTEM_INSTRUCTION = `You are ZerosProt, the official AI assistant for Zeros, a 16-year-old software and AI engineer. 
 Your tone is professional, architectural, slightly blunt, and highly knowledgeable. 
 Zeros builds B2B tools: Data Scrapers (NEXUS OSINT), CustomTkinter dashboards (APEX TITAN), local voice LLMs (CYAN AI), and clean entry/mid-level web development (HTML/JS/Python).
@@ -624,7 +643,7 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
         const typingIndicator = document.getElementById('typing-indicator');
         
         let isChatOpen = false;
-        let chatState = "LLM_MODE"; // States: LLM_MODE, NAME, EMAIL, PROJECT, DONE
+        let chatState = "LLM_MODE"; 
         let chatHistory = [];
         
         let ticketPayload = {
@@ -633,6 +652,16 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
             project_details: "",
             ip_address: "Fetching..."
         };
+
+        // --- MARKDOWN PARSER FOR BOLD & LINKS ---
+        function parseMarkdown(text) {
+            let html = text;
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: var(--cyan); text-decoration: none; font-weight: bold;">$1</a>');
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: white;">$1</strong>');
+            html = html.replace(/(?<!\*)\*(?!\*)(.*?)\*/g, '<em>$1</em>');
+            html = html.replace(/\n/g, '<br>');
+            return html;
+        }
 
         function toggleChat() {
             isChatOpen = !isChatOpen;
@@ -649,7 +678,7 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
         function addUserMessage(text) {
             const div = document.createElement('div');
             div.className = 'message user';
-            div.innerText = text;
+            div.innerHTML = parseMarkdown(text);
             chatMessages.appendChild(div);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -657,7 +686,7 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
         function addBotMessage(text) {
             const div = document.createElement('div');
             div.className = 'message bot';
-            div.innerText = text;
+            div.innerHTML = parseMarkdown(text);
             chatMessages.appendChild(div);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -672,20 +701,15 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
             }
         }
 
-        // --- GEMINI API CALL ---
         async function askGemini(userMessage) {
             typingIndicator.style.display = 'block';
             chatInput.disabled = true;
 
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-            
-            // Maintain a short history for context, plus the current message
             const contents = chatHistory.concat([{ role: "user", parts: [{ text: userMessage }] }]);
 
             const payload = {
-                systemInstruction: {
-                    parts: [{ text: SYSTEM_INSTRUCTION }]
-                },
+                systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
                 contents: contents
             };
 
@@ -697,16 +721,13 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
                 });
 
                 const data = await response.json();
-                
                 if (!response.ok) throw new Error(data.error.message || "API Error");
 
                 let botResponse = data.candidates[0].content.parts[0].text;
 
-                // Save to history
                 chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
                 chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
 
-                // Intent Handoff: Check for the secret trigger word
                 if (botResponse.includes("[START_TICKET]")) {
                     botResponse = botResponse.replace("[START_TICKET]", "").trim();
                     if(botResponse) addBotMessage(botResponse);
@@ -743,12 +764,11 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
             chatInput.value = '';
             
             if (chatState === "LLM_MODE") {
-                // Let Gemini handle the conversation
                 await askGemini(text);
             } 
             else if (chatState === "NAME") {
                 ticketPayload.name = text;
-                addBotMessage(`Thank you, ${text}. What is the best Email Address to reach you at?`);
+                addBotMessage(`Thank you, **${text}**. What is the best Email Address to reach you at?`);
                 chatState = "EMAIL";
             } 
             else if (chatState === "EMAIL") {
@@ -771,13 +791,6 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
         }
 
         function sendTicketToGmail() {
-            if(EMAILJS_PUBLIC_KEY === "Zk6PCJMaAPw0NtCX7") {
-                addBotMessage("[WARNING: EmailJS keys not configured. This is a local simulation. Ticket logged to console.]");
-                console.log("TICKET PAYLOAD:", ticketPayload);
-                chatState = "DONE";
-                return;
-            }
-
             emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, ticketPayload)
             .then(() => {
                 addBotMessage("Encrypted ticket dispatched to Zeros' terminal successfully. He will review your inquiry and contact you shortly.");
