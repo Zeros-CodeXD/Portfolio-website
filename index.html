@@ -67,7 +67,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* The entire logo now inherits the RGB shift uniformly */
         .logo {
             font-weight: 800;
             font-size: 1.5rem;
@@ -505,7 +504,7 @@
                 <h3>APEX TITAN</h3>
                 <div class="tags">
                     <span class="tag">Python</span>
-                    <span class="tag">Gemini API</span>
+                    <span class="tag">AI Analysis</span>
                     <span class="tag">Finance Dashboard</span>
                 </div>
                 <p>An institutional-grade desktop trading terminal. Features live candlestick rendering and a Generative AI analyst built-in.</p>
@@ -622,33 +621,16 @@
 
         // --- 2. ZEROSPROT LLM LOAD-BALANCER & EMAILJS SYSTEM ---
 
-        // Helper function to pause execution and bypass IP tracking
-        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-        
-        // !--- OBFUSCATED GOOGLE API KEYS ---!
-        // Split your keys in half here to bypass GitHub Secret Scanning.
-        const k1_a = "AIzaSyD5oj9cWe6mN";  const k1_b = "5uNFvo5DWk77SqeadNb_6U";
-        const k2_a = "AIzaSyARu6aSoBU5_O2"; const k2_b = "nZWn-rStk-xynBdm-Y5A";
-        const k3_a = "AIzaSyAfScVfQd1s0";  const k3_b = "0kVM056VA79LBEBRjq1-Ec";
-
-        const apiKeys = [
-            k1_a + k1_b,
-            k2_a + k2_b,
-            k3_a + k3_b
-        ];
-        let currentKeyIndex = 0;
-        
         const EMAILJS_PUBLIC_KEY = "Zk6PCJMaAPw0NtCX7";
         const EMAILJS_SERVICE_ID = "service_z8bo14l";
         const EMAILJS_TEMPLATE_ID = "template_osxy5un";
         
         (function() { emailjs.init(EMAILJS_PUBLIC_KEY); })();
 
-        // !--- UPDATED SYSTEM INSTRUCTION WITH YOUR EXPERIENCE AND PROFILE LINK ---!
         const SYSTEM_INSTRUCTION = `You are ZerosProt, the official AI assistant for Zeros, a 16-year-old software and AI engineer. 
 Your tone is professional, architectural, slightly blunt, and highly knowledgeable. 
 Zeros has minimal to mid-level experience of around 6-7 months, but builds highly functional B2B tools: Data Scrapers (NEXUS OSINT), CustomTkinter dashboards (APEX TITAN), local voice LLMs (CYAN AI), and clean entry/mid-level web development (e-commerce layouts, HTML/CSS/JS/Python).
-His broader tech stack includes Python, web layouts, Asyncio, AI integration via Gemini APIs, and local LLM architectures.
+His broader tech stack includes Python, web layouts, Asyncio, AI integration via Pollinations AI, and local LLM architectures.
 Trust is built on his public GitHub code: https://github.com/Zeros-CodeXD.
 RULE 1: Answer questions related to software engineering, AI, Zeros' tech stack, and his portfolio. 
 RULE 2: If the user asks about off-topic things (e.g., movies, pop culture, irrelevant trivia, or inappropriate topics), politely decline and steer the conversation back to tech or hiring Zeros.
@@ -718,38 +700,39 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
             }
         }
 
-        async function askGemini(userMessage) {
+        async function askPollinations(userMessage) {
             typingIndicator.style.display = 'block';
             chatInput.disabled = true;
-            let shouldResetUI = true; 
 
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKeys[currentKeyIndex]}`;
-            const contents = chatHistory.concat([{ role: "user", parts: [{ text: userMessage }] }]);
-
-            const payload = {
-                systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-                contents: contents
-            };
+            const messages = [
+                { role: "system", content: SYSTEM_INSTRUCTION },
+                ...chatHistory,
+                { role: "user", content: userMessage }
+            ];
 
             try {
-                const response = await fetch(url, {
+                // Utilizing the Pollinations AI OpenAI-compatible endpoint
+                const response = await fetch("https://text.pollinations.ai/openai", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({
+                        model: "openai", 
+                        messages: messages,
+                        temperature: 0.7
+                    })
                 });
 
                 if (!response.ok) {
-                    if (response.status === 429) throw new Error("429");
-                    const data = await response.json();
-                    throw new Error(data.error.message || "API Error");
+                    throw new Error("API Connection Error");
                 }
                 
                 const data = await response.json();
-                let botResponse = data.candidates[0].content.parts[0].text;
+                let botResponse = data.choices[0].message.content;
 
-                chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
-                chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
+                chatHistory.push({ role: "user", content: userMessage });
+                chatHistory.push({ role: "assistant", content: botResponse });
 
+                // Detect the hand-off string and trigger the air-gap
                 if (botResponse.includes("[START_TICKET]")) {
                     botResponse = botResponse.replace("[START_TICKET]", "").trim();
                     if(botResponse) addBotMessage(botResponse);
@@ -761,50 +744,19 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
                         chatInput.disabled = false;
                         chatInput.focus();
                     }, 800);
-                    shouldResetUI = false; 
                     return;
                 }
 
                 addBotMessage(botResponse);
 
             } catch (error) {
-                // Key Rotation & Load Balancing with IP-Bypass Delay
-                if (error.message.includes("429") || error.message.includes("quota")) {
-                    if (currentKeyIndex < apiKeys.length - 1) {
-                        currentKeyIndex++;
-                        console.log(`Key limits reached. Re-routing to Neural Core ${currentKeyIndex + 1}...`);
-                        shouldResetUI = false; 
-                        
-                        // 1.5 second pause to let Google's IP firewall breathe
-                        await sleep(1500);
-                        
-                        await askGemini(userMessage); 
-                        return;
-                    } else {
-                        console.log("All API Cores exhausted. Triggering Fallback Protocol.");
-                        addBotMessage("ZerosProt is currently assisting too many clients at once. Rerouting to secure manual intake...");
-                        
-                        setTimeout(() => {
-                            addBotMessage("To ensure Zeros receives your inquiry, please provide your Name to open a direct ticket.");
-                            chatState = "NAME";
-                            typingIndicator.style.display = 'none';
-                            chatInput.disabled = false;
-                            chatInput.focus();
-                        }, 1500);
-                        shouldResetUI = false;
-                        return;
-                    }
-                }
-                
-                console.error("Gemini Error:", error);
-                addBotMessage("Connection to ZerosProt neural net lost. Please ensure API keys are active.");
+                console.error("Pollinations Error:", error);
+                addBotMessage("Connection to ZerosProt neural net lost. Please ensure your connection is stable.");
             } finally {
-                if (shouldResetUI) {
-                    typingIndicator.style.display = 'none';
-                    if(chatState === "LLM_MODE") {
-                        chatInput.disabled = false;
-                        chatInput.focus();
-                    }
+                typingIndicator.style.display = 'none';
+                if(chatState === "LLM_MODE") {
+                    chatInput.disabled = false;
+                    chatInput.focus();
                 }
             }
         }
@@ -817,7 +769,7 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
             chatInput.value = '';
             
             if (chatState === "LLM_MODE") {
-                await askGemini(text);
+                await askPollinations(text);
             } 
             else if (chatState === "NAME") {
                 let lowerText = text.toLowerCase();
