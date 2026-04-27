@@ -67,6 +67,7 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* The entire logo now inherits the RGB shift uniformly */
         .logo {
             font-weight: 800;
             font-size: 1.5rem;
@@ -77,10 +78,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: rgb-shift 6s ease infinite;
-        }
-        
-        .logo span {
-            -webkit-text-fill-color: var(--gold);
         }
 
         .nav-btn {
@@ -461,7 +458,7 @@
     <canvas id="bg-canvas"></canvas>
 
     <nav>
-        <a href="#" class="logo">ZERO<span>S.</span></a>
+        <a href="#" class="logo">ZEROS.</a>
         <a href="#" class="nav-btn" onclick="toggleChat()">Hire Me</a>
     </nav>
 
@@ -624,6 +621,9 @@
 
 
         // --- 2. ZEROSPROT LLM LOAD-BALANCER & EMAILJS SYSTEM ---
+
+        // Helper function to pause execution and bypass IP tracking
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
         
         // !--- OBFUSCATED GOOGLE API KEYS ---!
         // Split your keys in half here to bypass GitHub Secret Scanning.
@@ -644,10 +644,12 @@
         
         (function() { emailjs.init(EMAILJS_PUBLIC_KEY); })();
 
+        // !--- UPDATED SYSTEM INSTRUCTION WITH YOUR EXPERIENCE AND PROFILE LINK ---!
         const SYSTEM_INSTRUCTION = `You are ZerosProt, the official AI assistant for Zeros, a 16-year-old software and AI engineer. 
 Your tone is professional, architectural, slightly blunt, and highly knowledgeable. 
-Zeros builds B2B tools: Data Scrapers (NEXUS OSINT), CustomTkinter dashboards (APEX TITAN), local voice LLMs (CYAN AI), and clean entry/mid-level web development (HTML/JS/Python).
-He has over a year of intensive experience. Trust is built on his public GitHub code (Zeros-CodeXD).
+Zeros has minimal to mid-level experience of around 6-7 months, but builds highly functional B2B tools: Data Scrapers (NEXUS OSINT), CustomTkinter dashboards (APEX TITAN), local voice LLMs (CYAN AI), and clean entry/mid-level web development (e-commerce layouts, HTML/CSS/JS/Python).
+His broader tech stack includes Python, web layouts, Asyncio, AI integration via Gemini APIs, and local LLM architectures.
+Trust is built on his public GitHub code: https://github.com/Zeros-CodeXD.
 RULE 1: Answer questions related to software engineering, AI, Zeros' tech stack, and his portfolio. 
 RULE 2: If the user asks about off-topic things (e.g., movies, pop culture, irrelevant trivia, or inappropriate topics), politely decline and steer the conversation back to tech or hiring Zeros.
 RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ticket, you MUST include the exact string '[START_TICKET]' in your response. Keep your reply brief when triggering this.`;
@@ -766,12 +768,16 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
                 addBotMessage(botResponse);
 
             } catch (error) {
-                // Key Rotation & Load Balancing
+                // Key Rotation & Load Balancing with IP-Bypass Delay
                 if (error.message.includes("429") || error.message.includes("quota")) {
                     if (currentKeyIndex < apiKeys.length - 1) {
                         currentKeyIndex++;
                         console.log(`Key limits reached. Re-routing to Neural Core ${currentKeyIndex + 1}...`);
                         shouldResetUI = false; 
+                        
+                        // 1.5 second pause to let Google's IP firewall breathe
+                        await sleep(1500);
+                        
                         await askGemini(userMessage); 
                         return;
                     } else {
