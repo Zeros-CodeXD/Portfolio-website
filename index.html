@@ -315,10 +315,10 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
                     'Authorization': `Bearer ${GROQ_KEY}` 
                 },
                 body: JSON.stringify({ 
-                    model: "llama-3.1-8b-instant",   // <-- UPDATED TO ACTIVE MODEL
+                    model: "llama-3.1-8b-instant",
                     messages: messages, 
                     temperature: 0.5, 
-                    max_completion_tokens: 500       // <-- UPDATED TO NEW OPENAI SPEC
+                    max_completion_tokens: 500
                 })
             });
             
