@@ -103,7 +103,7 @@
 
     <nav>
         <a href="#" class="logo">ZEROS.</a>
-        <a href="#" class="nav-btn" onclick="toggleChat()">Hire Me</a>
+        <a href="#" class="nav-btn" onclick="openChat()">Hire Me</a>
     </nav>
 
     <section class="hero">
@@ -149,21 +149,21 @@
                 <h3>AI Chatbot Integration</h3>
                 <p>I will integrate a secure, custom-trained LLM chatbot directly into your existing website to handle customer support 24/7.</p>
                 <div style="margin-top: auto; font-size: 1.5rem; font-weight: bold; color: var(--gold); margin-bottom: 20px;">$150 - $300</div>
-                <a href="#" class="card-btn" onclick="toggleChat(); document.getElementById('chat-input-field').value='I want to purchase the AI Chatbot package'; handleUserInput(); return false;">Book This</a>
+                <a href="#" class="card-btn" onclick="openChat(); document.getElementById('chat-input-field').value='I want to purchase the AI Chatbot package'; handleUserInput(); return false;">Book This</a>
             </div>
             <div class="card">
                 <div class="card-icon">🧲</div>
                 <h3>B2B Lead Extraction</h3>
                 <p>Need clients? I will run my custom OSINT scrapers to deliver a CSV of 500+ targeted business emails and phone numbers in your niche.</p>
                 <div style="margin-top: auto; font-size: 1.5rem; font-weight: bold; color: var(--gold); margin-bottom: 20px;">$50 - $100</div>
-                <a href="#" class="card-btn" onclick="toggleChat(); document.getElementById('chat-input-field').value='I want the B2B Lead Extraction package'; handleUserInput(); return false;">Book This</a>
+                <a href="#" class="card-btn" onclick="openChat(); document.getElementById('chat-input-field').value='I want the B2B Lead Extraction package'; handleUserInput(); return false;">Book This</a>
             </div>
             <div class="card">
                 <div class="card-icon">🛠️</div>
                 <h3>E-Commerce / Web Tweaks</h3>
                 <p>Rapid bug fixes, UI improvements, and custom layout adjustments for your storefront.</p>
                 <div style="margin-top: auto; font-size: 1.5rem; font-weight: bold; color: var(--gold); margin-bottom: 20px;">$50 / hour</div>
-                <a href="#" class="card-btn" onclick="toggleChat(); document.getElementById('chat-input-field').value='I need Web Tweaks for my site'; handleUserInput(); return false;">Book This</a>
+                <a href="#" class="card-btn" onclick="openChat(); document.getElementById('chat-input-field').value='I need Web Tweaks for my site'; handleUserInput(); return false;">Book This</a>
             </div>
         </div>
     </section>
@@ -193,7 +193,7 @@
                     <span class="tag">Local LLM</span><span class="tag">Speech-to-Text</span><span class="tag">Privacy</span>
                 </div>
                 <p>A completely offline, voice-activated AI assistant capable of reasoning, coding, and saving context to a local vault.</p>
-                <a href="#" class="card-btn outline" onclick="toggleChat(); document.getElementById('chat-input-field').value='I want to request a custom offline bot like CYAN'; handleUserInput(); return false;">Request Custom Bot</a>
+                <a href="#" class="card-btn outline" onclick="openChat(); document.getElementById('chat-input-field').value='I want to request a custom offline bot like CYAN'; handleUserInput(); return false;">Request Custom Bot</a>
             </div>
         </div>
     </section>
@@ -269,7 +269,8 @@
 
         // --- 2. ZEROSPROT TRIPLE-REDUNDANT API CASCADE & AIR-GAP SYSTEM ---
 
-        // OBFUSCATED API KEYS (Update these strings!)
+        // WARNING: Keeping API keys in frontend JS is dangerous for production.
+        // Once you start getting high traffic, move these to a secure backend server.
         const GROQ_KEY = "gsk_nOnx1yzrVxd1o0ehnZbC" + "WGdyb3FYilME6L046vxNuVfSBRUgFMDo";
         const GEMINI_KEY = "AIzaSyARu6aSoBU5_O" + "2nZWn-rStk-xynBdm-Y5A";
 
@@ -278,14 +279,19 @@
         const EMAILJS_TEMPLATE_ID = "template_osxy5un";
         (function() { emailjs.init(EMAILJS_PUBLIC_KEY); })();
 
+        // FIXED SYSTEM INSTRUCTION: Now includes knowledge of your business packages!
         const SYSTEM_INSTRUCTION = `You are ZerosProt, the official AI assistant for Zeros, a 16-year-old software and AI engineer. 
 Your tone is professional, architectural, slightly blunt, and highly knowledgeable. 
-Zeros has minimal to mid-level experience of around 6-7 months, but builds highly functional B2B tools: Data Scrapers (NEXUS OSINT), CustomTkinter dashboards (APEX TITAN), local voice LLMs (CYAN AI), and clean entry/mid-level web development (e-commerce layouts, HTML/CSS/JS/Python).
-His broader tech stack includes Python, web layouts, Asyncio, AI integration via APIs, and local LLM architectures.
-Trust is built on his public GitHub code: https://github.com/Zeros-CodeXD.
+Zeros builds highly functional B2B tools: Data Scrapers (NEXUS OSINT), CustomTkinter dashboards (APEX TITAN), local voice LLMs (CYAN AI), and web development.
+
+Zeros offers 3 Standard Packages:
+1. AI Chatbot Integration ($150 - $300)
+2. B2B Lead Extraction ($50 - $100)
+3. E-Commerce / Web Tweaks ($50 / hour)
+
 RULE 1: Answer questions related to software engineering, AI, Zeros' tech stack, and his portfolio. 
-RULE 2: If the user asks about off-topic things (e.g., movies, pop culture, irrelevant trivia, or inappropriate topics), politely decline and steer the conversation back to tech or hiring Zeros.
-RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ticket, you MUST include the exact string '[START_TICKET]' in your response. Keep your reply brief when triggering this.`;
+RULE 2: If the user asks about off-topic things, politely decline and steer the conversation back to tech.
+RULE 3: If the user explicitly asks to start a project, hire Zeros, open a ticket, OR mentions wanting to purchase one of the standard packages (e.g., "I want to purchase the AI Chatbot package", "I want the B2B Lead Extraction package", etc.), you MUST immediately include the exact string '[START_TICKET]' in your response to begin onboarding. Keep your reply brief when triggering this.`;
 
         const chatWindow = document.getElementById('chat-window');
         const chatMessages = document.getElementById('chat-messages');
@@ -309,6 +315,15 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
             isChatOpen = !isChatOpen;
             chatWindow.style.display = isChatOpen ? 'flex' : 'none';
             if(isChatOpen && chatMessages.children.length === 0) {
+                addBotMessage("System Initialized. I am ZerosProt, the AI architecture handling this domain. \n\nI can answer any deep technical questions about Zeros' stack, experience, and B2B projects. Or, tell me you want to start a project.");
+            }
+        }
+
+        // NEW FIX: This forces the chat open without toggling it closed if it was already open.
+        function openChat() {
+            isChatOpen = true;
+            chatWindow.style.display = 'flex';
+            if(chatMessages.children.length === 0) {
                 addBotMessage("System Initialized. I am ZerosProt, the AI architecture handling this domain. \n\nI can answer any deep technical questions about Zeros' stack, experience, and B2B projects. Or, tell me you want to start a project.");
             }
         }
@@ -340,7 +355,6 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, or open a ti
 
         // --- THE API CASCADING ENGINE ---
 
-        // NEW FIX: Using llama-3.1-8b-instant and max_completion_tokens
         async function tryGroq(userMessage) {
             console.log("Attempting V8 Core (Groq)...");
             const messages = [{ role: "system", content: SYSTEM_INSTRUCTION }, ...chatHistory, { role: "user", content: userMessage }];
