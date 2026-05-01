@@ -279,7 +279,6 @@
         const EMAILJS_TEMPLATE_ID = "template_osxy5un";
         (function() { emailjs.init(EMAILJS_PUBLIC_KEY); })();
 
-        // FIXED SYSTEM INSTRUCTION: Now includes knowledge of your business packages!
         const SYSTEM_INSTRUCTION = `You are ZerosProt, the official AI assistant for Zeros, a 16-year-old software and AI engineer. 
 Your tone is professional, architectural, slightly blunt, and highly knowledgeable. 
 Zeros builds highly functional B2B tools: Data Scrapers (NEXUS OSINT), CustomTkinter dashboards (APEX TITAN), local voice LLMs (CYAN AI), and web development.
@@ -319,7 +318,6 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, open a ticke
             }
         }
 
-        // NEW FIX: This forces the chat open without toggling it closed if it was already open.
         function openChat() {
             isChatOpen = true;
             chatWindow.style.display = 'flex';
@@ -437,6 +435,30 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, open a ticke
             const text = chatInput.value.trim();
             if(!text) return;
             addUserMessage(text); chatInput.value = '';
+
+            // --- THE FIX: GLOBAL INTERRUPTS & ESCAPE HATCHES ---
+            const packageTriggers = [
+                "I want to purchase the AI Chatbot package",
+                "I want the B2B Lead Extraction package",
+                "I need Web Tweaks for my site",
+                "I want to request a custom offline bot like CYAN"
+            ];
+
+            // 1. If user types cancel, abort the process entirely.
+            if (text.toLowerCase() === "cancel" || text.toLowerCase() === "exit" || text.toLowerCase() === "stop") {
+                chatState = "LLM_MODE";
+                ticketPayload = { name: "", email: "", project_details: "", ip_address: "Fetching..." };
+                addBotMessage("Ticket creation aborted. How else can I assist you today?");
+                return;
+            }
+
+            // 2. If user clicks a package button while mid-booking, reset the flow.
+            if (packageTriggers.includes(text) && chatState !== "LLM_MODE") {
+                chatState = "LLM_MODE"; // Reset back to AI mode
+                ticketPayload = { name: "", email: "", project_details: "", ip_address: "Fetching..." }; // Wipe old data
+                // We do NOT return here, we let the text fall through to the LLM_MODE below so the AI handles it!
+            }
+            // --------------------------------------------------
             
             if (chatState === "LLM_MODE") {
                 await orchestrateAIFallback(text);
@@ -449,7 +471,7 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, open a ticke
                     addBotMessage(`Thank you, **${text}**. What is the best Email Address to reach you at?`);
                     chatState = "EMAIL";
                 } else {
-                    addBotMessage("That doesn't look like a valid name. Please provide your actual name to proceed.");
+                    addBotMessage("That doesn't look like a valid name. Please provide your actual name to proceed, or type **'cancel'** to exit.");
                 }
             } 
             else if (chatState === "EMAIL") {
@@ -458,7 +480,7 @@ RULE 3: If the user explicitly asks to start a project, hire Zeros, open a ticke
                     addBotMessage("Email verified. Finally, briefly describe the software, scraper, or website you need built.");
                     chatState = "PROJECT";
                 } else {
-                    addBotMessage("That doesn't look like a valid email. Please try again.");
+                    addBotMessage("That doesn't look like a valid email. Please try again, or type **'cancel'** to exit.");
                 }
             } 
             else if (chatState === "PROJECT") {
