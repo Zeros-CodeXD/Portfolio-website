@@ -25,7 +25,7 @@ const navItems = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     
     <!-- DNS Prefetch to optimize lookup times -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
