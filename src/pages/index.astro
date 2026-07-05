@@ -1,0 +1,243 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Chatbot from '../components/Chatbot.astro';
+---
+
+<Layout
+  title="ZEROS | Software & AI Engineer"
+  description="I build OSINT scrapers, offline AI assistants, trading terminals, and custom LLM chatbots. Open source. Battle-tested."
+  activePage="/"
+>
+  <!-- ===== HERO ===== -->
+  <section class="hero-section">
+    <div class="hero-left reveal">
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        Available for Freelance & Projects
+      </div>
+      <h1 class="hero-title">
+        Building Next-Gen<br/>
+        <span class="gradient-text">Software & AI.</span>
+      </h1>
+      <p class="hero-subtitle">
+        I build OSINT scrapers, offline AI assistants, trading dashboards, and custom LLM chatbots — tools that run your business on autopilot.
+      </p>
+      <div class="hero-ctas">
+        <a href="/services" class="cta-primary">View Services →</a>
+        <a href="/projects" class="cta-outline">See Projects</a>
+      </div>
+    </div>
+
+    <div class="hero-right reveal" style="--delay:200ms">
+      <div class="terminal-card">
+        <div class="terminal-topbar">
+          <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+          <span class="terminal-title">zeros@nexus-v2:~</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-dim">$</span> <span class="t-cmd">python</span> NexusV2.py --target example.com</div>
+          <div class="t-line t-ok">✓ 9 social platforms mapped</div>
+          <div class="t-line t-ok">✓ Emails + phones extracted</div>
+          <div class="t-line t-ok">✓ EXIF GPS forensics complete</div>
+          <div class="t-line"><span class="t-dim">$</span> <span class="t-cmd">curl</span> titan-intel-api/v1/sweep</div>
+          <div class="t-line t-muted">&#123;</div>
+          <div class="t-line t-muted">&nbsp;&nbsp;"emails": <span class="t-cyan">12</span>, "socials": <span class="t-cyan">5</span></div>
+          <div class="t-line t-muted">&#125;</div>
+          <div class="t-line"><span class="t-dim">$</span> <span class="t-cursor">▋</span></div>
+        </div>
+      </div>
+      <div class="float-pill pill-top">
+        <span>🔒</span>
+        <div><strong>100% Offline</strong><br/><small>CYAN AI — no cloud</small></div>
+      </div>
+      <div class="float-pill pill-bottom">
+        <span>⚡</span>
+        <div><strong>50 Concurrent</strong><br/><small>async workers</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURED PROJECTS STRIP ===== -->
+  <section class="featured-strip">
+    <div class="strip-inner">
+      <p class="strip-label">Featured Projects</p>
+      <div class="strip-cards">
+        <a href="/projects#nexus" class="strip-card">
+          <span class="strip-icon">🕷️</span>
+          <div>
+            <strong>NEXUS V2</strong>
+            <p>OSINT & forensics desktop app</p>
+          </div>
+          <span class="strip-arrow">↗</span>
+        </a>
+        <a href="/projects#titan" class="strip-card">
+          <span class="strip-icon">⚡</span>
+          <div>
+            <strong>TITAN INTEL API</strong>
+            <p>Live domain sweep REST API</p>
+          </div>
+          <span class="strip-arrow">↗</span>
+        </a>
+        <a href="/projects#apex" class="strip-card">
+          <span class="strip-icon">📈</span>
+          <div>
+            <strong>APEX TITAN v2</strong>
+            <p>Desktop trading terminal</p>
+          </div>
+          <span class="strip-arrow">↗</span>
+        </a>
+        <a href="/projects#cyan" class="strip-card">
+          <span class="strip-icon">🤖</span>
+          <div>
+            <strong>CYAN AI</strong>
+            <p>Offline voice AI assistant</p>
+          </div>
+          <span class="strip-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CAPABILITIES ===== -->
+  <section class="section-container">
+    <div class="section-header reveal">
+      <p class="eyebrow">What I Build</p>
+      <h2 class="section-title">My Capabilities</h2>
+      <p class="section-sub">Battle-tested tools — each one ships with real, working code.</p>
+    </div>
+    <div class="cap-grid">
+      <div class="cap-card reveal" style="--delay:0ms">
+        <div class="cap-icon cyan-ring">🕷️</div>
+        <h3>OSINT & Scraping</h3>
+        <p>Async scrapers running up to 50 concurrent workers. Extracts emails, phone numbers, social vectors with rotating stealth headers.</p>
+        <a href="/projects" class="cap-link">See NEXUS V2 →</a>
+      </div>
+      <div class="cap-card reveal" style="--delay:100ms">
+        <div class="cap-icon purple-ring">🤖</div>
+        <h3>Custom AI Agents</h3>
+        <p>Fully offline local LLMs via Ollama. Cloud chatbots with triple-redundant fallback (Groq → Gemini → Pollinations) and EmailJS pipelines.</p>
+        <a href="/projects#cyan" class="cap-link">See CYAN AI →</a>
+      </div>
+      <div class="cap-card reveal" style="--delay:200ms">
+        <div class="cap-icon rose-ring">📈</div>
+        <h3>Trading Dashboards</h3>
+        <p>CustomTkinter terminals with live candlestick charts, RSI + SMA-50 indicators, Ollama AI analyst, and Google News feeds.</p>
+        <a href="/projects#apex" class="cap-link">See APEX TITAN →</a>
+      </div>
+      <div class="cap-card reveal" style="--delay:300ms">
+        <div class="cap-icon emerald-ring">🌐</div>
+        <h3>Web Development</h3>
+        <p>Fast, responsive Astro + FastAPI sites with embedded chatbots, REST APIs, and glassmorphic UI from scratch.</p>
+        <a href="/services" class="cap-link">View packages →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section class="cta-banner">
+    <div class="cta-banner-inner">
+      <h2>Ready to build something?</h2>
+      <p>Let's talk about your project — no commitment required.</p>
+      <div class="cta-row">
+        <a href="/contact" class="cta-primary">Start a Project →</a>
+        <a href="/services" class="cta-outline">View Pricing</a>
+      </div>
+    </div>
+  </section>
+
+  <Chatbot />
+</Layout>
+
+<style>
+  /* HERO */
+  .hero-section {
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+    min-height: 92vh; padding: 60px 8%; gap: 60px;
+    max-width: 1400px; margin: 0 auto; position: relative; z-index: 10;
+  }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(16,185,129,0.08); color: var(--success);
+    padding: 7px 16px; border-radius: 30px; font-size: 0.8rem; font-weight: 600;
+    margin-bottom: 28px; border: 1px solid rgba(16,185,129,0.25); width: fit-content;
+  }
+  .status-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); animation: pulseDot 2s infinite; }
+  .hero-title { font-size: 4.8rem; font-weight: 800; line-height: 1.08; margin-bottom: 24px; letter-spacing: -3px; color: var(--text-main); }
+  .gradient-text { background: linear-gradient(135deg,var(--primary) 0%,var(--secondary) 50%,var(--accent) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-size:200% 200%; animation: gradientShift 8s ease infinite; }
+  .hero-subtitle { font-size: 1.1rem; color: var(--text-muted); max-width: 520px; line-height: 1.65; margin-bottom: 36px; font-weight: 300; }
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+  .cta-primary { padding: 14px 30px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; background: linear-gradient(135deg,var(--primary),var(--secondary)); color: white; box-shadow: 0 8px 28px rgba(56,189,248,0.28); transition: all 0.3s; }
+  .cta-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(168,85,247,0.4); }
+  .cta-outline { padding: 14px 30px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; background: rgba(255,255,255,0.03); color: var(--text-main); border: 1px solid var(--glass-border); transition: all 0.3s; }
+  .cta-outline:hover { transform: translateY(-2px); border-color: var(--primary); background: rgba(56,189,248,0.05); }
+
+  /* Terminal */
+  .hero-right { position: relative; display: flex; justify-content: center; align-items: center; }
+  .terminal-card { background: rgba(13,20,38,0.92); border: 1px solid rgba(56,189,248,0.2); border-radius: 18px; overflow: hidden; width: 100%; max-width: 420px; font-family: 'Courier New', monospace; box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 80px rgba(56,189,248,0.05); animation: floatCard 6s ease-in-out infinite; }
+  .terminal-topbar { display: flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.03); padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-red { background:#ff5f56; } .dot-yellow { background:#ffbd2e; } .dot-green { background:#27c93f; }
+  .terminal-title { margin-left: 8px; font-size: 0.78rem; color: var(--text-muted); font-family: 'Inter', sans-serif; }
+  .terminal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 5px; font-size: 0.8rem; }
+  .t-line { line-height: 1.6; }
+  .t-dim { color: #475569; margin-right: 6px; }
+  .t-cmd { color: var(--primary); }
+  .t-ok { color: var(--success); }
+  .t-muted { color: #cbd5e1; }
+  .t-cyan { color: var(--primary); }
+  .t-cursor { animation: blink 1s step-end infinite; color: var(--primary); }
+  .float-pill { position: absolute; display: flex; align-items: center; gap: 10px; background: rgba(13,20,38,0.92); border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px 18px; backdrop-filter: blur(12px); font-size: 0.82rem; font-family: 'Inter', sans-serif; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .float-pill span:first-child { font-size: 1.4rem; }
+  .float-pill strong { display: block; color: var(--text-main); font-size: 0.95rem; font-weight: 700; }
+  .float-pill small { color: var(--text-muted); font-size: 0.73rem; }
+  .pill-top { top: -20px; right: -20px; animation: floatCard 5s 2.5s ease-in-out infinite; }
+  .pill-bottom { bottom: -20px; left: -30px; animation: floatCard 5s 1s ease-in-out infinite; }
+
+  @media (max-width: 900px) {
+    .hero-section { grid-template-columns: 1fr; text-align: center; min-height: auto; padding: 60px 5%; }
+    .hero-title { font-size: 3rem; letter-spacing: -2px; }
+    .status-badge, .hero-ctas { margin-inline: auto; }
+    .hero-subtitle { margin-inline: auto; }
+    .hero-right { display: none; }
+  }
+
+  /* FEATURED STRIP */
+  .featured-strip { background: rgba(255,255,255,0.02); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 40px 0; position: relative; z-index: 10; }
+  .strip-inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+  .strip-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; }
+  .strip-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .strip-card { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 14px; padding: 16px 20px; text-decoration: none; color: var(--text-main); transition: all 0.3s; }
+  .strip-card:hover { border-color: rgba(56,189,248,0.25); background: rgba(56,189,248,0.04); transform: translateY(-2px); }
+  .strip-icon { font-size: 1.6rem; }
+  .strip-card strong { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+  .strip-card p { color: var(--text-muted); font-size: 0.78rem; margin: 0; }
+  .strip-arrow { margin-left: auto; color: var(--text-muted); font-size: 1.1rem; transition: color 0.3s; }
+  .strip-card:hover .strip-arrow { color: var(--primary); }
+
+  /* CAPABILITIES */
+  .section-container { max-width: 1280px; margin: 0 auto; padding: 96px 24px; position: relative; z-index: 10; }
+  .section-header { text-align: center; max-width: 700px; margin: 0 auto 64px; }
+  .eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+  .section-title { font-size: 2.8rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 14px; background: linear-gradient(135deg,#fff 0%,#a5b4fc 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .section-sub { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; }
+  .cap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 28px; }
+  .cap-card { background: rgba(13,20,38,0.5); border: 1px solid var(--glass-border); border-radius: 22px; padding: 36px 30px; transition: transform 0.4s, border-color 0.4s; display: flex; flex-direction: column; }
+  .cap-card:hover { transform: translateY(-8px); border-color: rgba(56,189,248,0.22); }
+  .cap-icon { width: 52px; height: 52px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 1.7rem; margin-bottom: 22px; }
+  .cyan-ring { box-shadow: inset 0 0 14px rgba(56,189,248,0.12); }
+  .purple-ring { box-shadow: inset 0 0 14px rgba(168,85,247,0.12); }
+  .rose-ring { box-shadow: inset 0 0 14px rgba(244,63,94,0.12); }
+  .emerald-ring { box-shadow: inset 0 0 14px rgba(16,185,129,0.12); }
+  .cap-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
+  .cap-card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.65; flex-grow: 1; margin-bottom: 20px; }
+  .cap-link { font-size: 0.85rem; font-weight: 600; color: var(--primary); text-decoration: none; transition: opacity 0.2s; }
+  .cap-link:hover { opacity: 0.75; }
+
+  /* CTA BANNER */
+  .cta-banner { position: relative; z-index: 10; padding: 0 24px 96px; }
+  .cta-banner-inner { max-width: 800px; margin: 0 auto; text-align: center; background: rgba(13,20,38,0.6); border: 1px solid rgba(56,189,248,0.15); border-radius: 28px; padding: 64px 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 0 80px rgba(56,189,248,0.04); }
+  .cta-banner-inner h2 { font-size: 2.4rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 14px; color: var(--text-main); }
+  .cta-banner-inner p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 36px; }
+  .cta-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+</style>
+

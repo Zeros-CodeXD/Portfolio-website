@@ -1,0 +1,174 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Chatbot from '../components/Chatbot.astro';
+---
+
+<Layout
+  title="ZEROS | Services & Pricing"
+  description="AI chatbot integration, OSINT lead extraction, and custom web development packages. Fixed pricing, fast delivery."
+  activePage="/services"
+>
+  <div class="page-hero">
+    <p class="eyebrow">Transparent Pricing</p>
+    <h1 class="page-title">Services & Packages</h1>
+    <p class="page-sub">Fixed-scope packages to fast-track your project. Custom scope always welcome — just ask.</p>
+  </div>
+
+  <div class="services-container">
+
+    <!-- PACKAGE CARDS -->
+    <div class="pkg-grid">
+
+      <!-- Package 1 -->
+      <div class="pkg-card reveal" style="--delay:0ms">
+        <div class="pkg-icon">💬</div>
+        <h2>AI Chatbot Integration</h2>
+        <p class="pkg-desc">A custom-trained LLM chatbot embedded into your existing website with a three-layer AI fallback system so it never goes offline.</p>
+        <ul class="pkg-features">
+          <li>Triple-redundant AI cascade: Groq → Gemini → Pollinations</li>
+          <li>Trained on your business data (FAQs, products, policies)</li>
+          <li>EmailJS ticket pipeline captures every lead automatically</li>
+          <li>Fully embedded — works on any existing website or framework</li>
+          <li>Custom UI colours, name, and personality</li>
+        </ul>
+        <div class="pkg-price">$150<span> – $300</span></div>
+        <button class="pkg-btn" id="pkg-chatbot-btn">Book This Package</button>
+        <div class="pkg-glow glow-cyan"></div>
+      </div>
+
+      <!-- Package 2 (featured) -->
+      <div class="pkg-card pkg-featured reveal" style="--delay:100ms">
+        <div class="featured-badge">Most Popular</div>
+        <div class="pkg-icon">🕵️</div>
+        <h2>OSINT Lead Extraction</h2>
+        <p class="pkg-desc">I run NEXUS V2 and TITAN INTEL against your target niche, extract verified business contact data, clean it, and deliver a ready-to-use CSV.</p>
+        <ul class="pkg-features">
+          <li>Verified business emails extracted from real websites</li>
+          <li>Phone numbers validated (7–15 digit check, no fakes)</li>
+          <li>Niche-targeted — you define the industry or geography</li>
+          <li>Clean CSV with source URL, email, and phone columns</li>
+          <li>Delivered within 48 hours</li>
+        </ul>
+        <div class="pkg-price">$50<span> – $100</span></div>
+        <button class="pkg-btn pkg-btn-featured" id="pkg-osint-btn">Book This Package</button>
+        <div class="pkg-glow glow-purple"></div>
+      </div>
+
+      <!-- Package 3 -->
+      <div class="pkg-card reveal" style="--delay:200ms">
+        <div class="pkg-icon">🛠️</div>
+        <h2>Web Fixes & Custom Dev</h2>
+        <p class="pkg-desc">Bug fixes, API integrations, UI improvements, and responsive layout work for your existing website or e-commerce storefront.</p>
+        <ul class="pkg-features">
+          <li>Bug fixes and layout repairs</li>
+          <li>REST API integrations (third-party or custom)</li>
+          <li>Responsive + mobile-first improvements</li>
+          <li>Performance and load-time optimisation</li>
+          <li>No retainer — pay only for hours worked</li>
+        </ul>
+        <div class="pkg-price">$50<span> / hour</span></div>
+        <button class="pkg-btn" id="pkg-web-btn">Book This Package</button>
+        <div class="pkg-glow glow-rose"></div>
+      </div>
+
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="how-section reveal">
+      <h2 class="how-title">How It Works</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3>You message the chatbot</h3>
+          <p>Tell it what you need — the chatbot on this site opens a conversation and logs a ticket automatically via EmailJS.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3>I confirm scope & timeline</h3>
+          <p>I'll reply within 24 hours with a fixed price, delivery date, and any questions. No hidden fees, no surprise invoices.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3>I build & deliver</h3>
+          <p>You get the finished product — working code, deployed if needed, with a brief handover doc explaining what was built.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOM BUILDS -->
+    <div class="custom-section reveal">
+      <div class="custom-inner">
+        <div class="custom-icon">🎯</div>
+        <div class="custom-text">
+          <h2>Need something custom?</h2>
+          <p>Need an offline AI assistant like CYAN, a custom trading bot, or a bespoke OSINT tool? These are quoted individually based on scope. Use the chatbot or email me directly.</p>
+        </div>
+        <div class="custom-actions">
+          <a href="/contact" class="btn-primary">Start a Conversation →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <Chatbot />
+</Layout>
+
+<style>
+  .page-hero { text-align: center; padding: 80px 24px 40px; position: relative; z-index: 10; }
+  .eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px; }
+  .page-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -2px; background: linear-gradient(135deg,#fff 0%,#a5b4fc 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom: 14px; }
+  .page-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 560px; margin: 0 auto; line-height: 1.6; }
+
+  .services-container { max-width: 1160px; margin: 0 auto; padding: 40px 24px 96px; position: relative; z-index: 10; display: flex; flex-direction: column; gap: 64px; }
+
+  /* PACKAGE GRID */
+  .pkg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+  .pkg-card { background: rgba(13,20,38,0.55); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px 34px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: transform 0.4s, border-color 0.4s; }
+  .pkg-card:hover { transform: translateY(-8px); border-color: rgba(56,189,248,0.22); }
+  .pkg-featured { border-color: rgba(168,85,247,0.3); box-shadow: 0 16px 48px rgba(168,85,247,0.08); }
+  .pkg-featured:hover { border-color: rgba(168,85,247,0.5); }
+  .featured-badge { position: absolute; top: 22px; right: 22px; background: linear-gradient(135deg,var(--secondary),var(--accent)); color: white; font-size: 0.68rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.7px; }
+  .pkg-icon { font-size: 2rem; margin-bottom: 20px; }
+  .pkg-card h2 { font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px; }
+  .pkg-desc { color: var(--text-muted); font-size: 0.93rem; line-height: 1.65; margin-bottom: 24px; }
+  .pkg-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; flex-grow: 1; }
+  .pkg-features li { font-size: 0.88rem; color: var(--text-muted); padding-left: 20px; position: relative; line-height: 1.4; }
+  .pkg-features li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: 700; }
+  .pkg-price { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text-main); margin-bottom: 20px; display: flex; align-items: baseline; gap: 4px; }
+  .pkg-price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+  .pkg-btn { display: flex; align-items: center; justify-content: center; padding: 13px 20px; width: 100%; background: rgba(255,255,255,0.04); color: var(--text-main); font-weight: 600; font-size: 0.92rem; border-radius: 12px; transition: all 0.3s; cursor: pointer; border: 1px solid var(--glass-border); font-family: 'Inter', sans-serif; }
+  .pkg-btn:hover { background: linear-gradient(135deg,var(--primary),var(--secondary)); color: white; border-color: transparent; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(56,189,248,0.3); }
+  .pkg-btn-featured { background: linear-gradient(135deg,var(--secondary),var(--accent)); color: white; border-color: transparent; }
+  .pkg-btn-featured:hover { box-shadow: 0 8px 24px rgba(168,85,247,0.35); }
+  .pkg-glow { position: absolute; width: 250px; height: 250px; border-radius: 50%; top: -125px; right: -125px; pointer-events: none; opacity: 0.08; }
+  .glow-cyan { background: radial-gradient(circle, var(--primary), transparent 70%); }
+  .glow-purple { background: radial-gradient(circle, var(--secondary), transparent 70%); }
+  .glow-rose { background: radial-gradient(circle, var(--accent), transparent 70%); }
+
+  /* HOW IT WORKS */
+  .how-section { background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 24px; padding: 48px 40px; }
+  .how-title { font-size: 2rem; font-weight: 800; letter-spacing: -1px; color: var(--text-main); margin-bottom: 36px; text-align: center; }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+  .step { display: flex; flex-direction: column; gap: 12px; }
+  .step-num { font-family: 'Outfit', sans-serif; font-size: 2.4rem; font-weight: 800; background: linear-gradient(135deg,var(--primary),var(--secondary)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height: 1; }
+  .step h3 { font-size: 1rem; font-weight: 700; color: var(--text-main); }
+  .step p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* CUSTOM */
+  .custom-section { background: rgba(56,189,248,0.04); border: 1px solid rgba(56,189,248,0.15); border-radius: 24px; padding: 40px; }
+  .custom-inner { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+  .custom-icon { font-size: 2.4rem; flex-shrink: 0; }
+  .custom-text { flex: 1; min-width: 200px; }
+  .custom-text h2 { font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+  .custom-text p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; }
+  .custom-actions { flex-shrink: 0; }
+  .btn-primary { padding: 12px 28px; border-radius: 12px; font-size: 0.92rem; font-weight: 600; text-decoration: none; background: linear-gradient(135deg,var(--primary),var(--secondary)); color: white; transition: all 0.3s; box-shadow: 0 6px 20px rgba(56,189,248,0.25); display: inline-block; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(168,85,247,0.35); }
+</style>
+
+<script>
+  document.getElementById('pkg-chatbot-btn')?.addEventListener('click', () => (window as any).triggerPurchase?.('I want to purchase the AI Chatbot package'));
+  document.getElementById('pkg-osint-btn')?.addEventListener('click', () => (window as any).triggerPurchase?.('I want the OSINT Lead Extraction package'));
+  document.getElementById('pkg-web-btn')?.addEventListener('click', () => (window as any).triggerPurchase?.('I need Web Fixes for my site'));
+</script>

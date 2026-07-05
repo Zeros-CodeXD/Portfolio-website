@@ -1,0 +1,119 @@
+/* ======================================
+   ZEROS PORTFOLIO — Global CSS
+   Tailwind v4: @import replaces @tailwind directives
+   Design tokens via :root (not @theme, as these are
+   plain CSS vars not generating Tailwind utilities)
+   ====================================== */
+@import "tailwindcss";
+
+/* ---------- Design Tokens ---------- */
+:root {
+  --bg-base: #060913;
+  --bg-card: rgba(13, 20, 38, 0.45);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --primary: #38bdf8;
+  --primary-glow: rgba(56, 189, 248, 0.22);
+  --secondary: #a855f7;
+  --secondary-glow: rgba(168, 85, 247, 0.22);
+  --accent: #f43f5e;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(56, 189, 248, 0.3);
+  --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --success: #10b981;
+}
+
+/* ---------- Base Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+body { position: relative; min-height: 100vh; overflow-x: hidden; }
+
+h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #060913; }
+::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; border: 2px solid #060913; }
+::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+/* ---------- Background Canvas ---------- */
+#bg-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: -2; pointer-events: none;
+}
+
+/* ---------- Ambient Orbs ---------- */
+.ambient-orb {
+  position: fixed; border-radius: 50%;
+  filter: blur(120px); z-index: -1;
+  opacity: 0.32; pointer-events: none;
+  animation: floatOrb 25s infinite alternate ease-in-out;
+}
+.orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%); top: -150px; left: -150px; }
+.orb-2 { width: 700px; height: 700px; background: radial-gradient(circle, var(--secondary-glow) 0%, transparent 70%); bottom: -200px; right: -100px; animation-delay: -7s; }
+.orb-3 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(244,63,94,0.12) 0%, transparent 70%); top: 40%; left: 50%; transform: translate(-50%,-50%); animation-delay: -14s; }
+
+@keyframes floatOrb {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(50px, 80px) scale(1.15); }
+  100% { transform: translate(-40px, 30px) scale(0.9); }
+}
+.orb-3 { animation: floatOrb3 25s infinite alternate ease-in-out; animation-delay: -14s; }
+@keyframes floatOrb3 {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  50%  { transform: translate(calc(-50% + 50px), calc(-50% + 80px)) scale(1.15); }
+  100% { transform: translate(calc(-50% - 40px), calc(-50% + 30px)) scale(0.9); }
+}
+
+/* ---------- Shared Utilities ---------- */
+@utility section-container {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 96px 24px;
+  position: relative;
+  z-index: 10;
+}
+
+@utility wide-container {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* ---------- Scroll Reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.165, 0.84, 0.44, 1) var(--delay, 0ms),
+    transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1) var(--delay, 0ms);
+}
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* ---------- Keyframes ---------- */
+@keyframes pulseDot {
+  0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}

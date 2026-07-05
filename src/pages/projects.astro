@@ -1,0 +1,215 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  {
+    id: 'nexus',
+    name: 'NEXUS V2',
+    subtitle: 'Superpower Edition',
+    tags: ['Python', 'Asyncio / aiohttp', 'OSINT', 'CustomTkinter'],
+    tagColors: ['cyan', 'purple', 'rose', 'cyan'],
+    status: 'Open Source',
+    statusColor: 'green',
+    description: `A multi-threaded OSINT & digital forensics desktop application. Runs up to 50 concurrent async workers powered by <code>aiohttp</code> and <code>asyncio</code>. Extracts emails and phone numbers from any target URL using compiled regex patterns, then maps usernames across 9 social platforms (GitHub, Twitter, Reddit, Instagram, Pinterest, GitLab, Medium, SoundCloud, Twitch) simultaneously.`,
+    features: [
+      '50 concurrent async workers with semaphore control',
+      'Email + phone extraction via regex (filters dummy domains)',
+      'Username mapping across 9 platforms in one scan',
+      'EXIF GPS metadata extraction from local images — outputs Google Maps link',
+      'Internet Archive CDX API integration for historical domain timeline',
+      'Full CSV export of all results',
+      'Rotating stealth user-agents (7 browser profiles) to bypass WAFs',
+    ],
+    links: [{ label: 'View Source Code ↗', href: 'https://github.com/Zeros-CodeXD/Nexus-Osint', primary: false }],
+    glowColor: 'cyan',
+    icon: '🕷️',
+  },
+  {
+    id: 'titan',
+    name: 'TITAN INTEL API',
+    subtitle: 'REST API on RapidAPI',
+    tags: ['FastAPI', 'Python', 'REST API', 'Monetized'],
+    tagColors: ['cyan', 'purple', 'rose', 'rose'],
+    status: 'Live',
+    statusColor: 'green',
+    description: `A deployed production REST API built with FastAPI that performs deep domain intelligence sweeps via a single endpoint call. Given any domain, it concurrently hits 5 key pages (root, /about, /about-us, /contact, /contact-us) and returns a structured JSON payload of extracted emails, phone numbers, and social media profile URLs.`,
+    features: [
+      'Single REST endpoint — send a domain, receive structured JSON',
+      'Sweeps 5 pages per domain concurrently (max 50 workers)',
+      'Extracts verified emails (filters placeholder domains)',
+      'Extracts phone numbers (7–15 digit validation)',
+      'Captures social media vectors (Twitter, LinkedIn, GitHub, etc.)',
+      'Rotating stealth headers to bypass basic WAF protections',
+      'Hosted and monetized on RapidAPI marketplace',
+    ],
+    links: [{ label: 'View on RapidAPI ↗', href: 'https://rapidapi.com/ZerosCodeXD/api/titan-intel-api', primary: true }],
+    glowColor: 'purple',
+    icon: '⚡',
+  },
+  {
+    id: 'apex',
+    name: 'APEX TITAN v2.0',
+    subtitle: 'Desktop Trading Terminal',
+    tags: ['CustomTkinter', 'yfinance', 'Ollama phi3.5', 'mplfinance'],
+    tagColors: ['cyan', 'purple', 'rose', 'cyan'],
+    status: 'Open Source',
+    statusColor: 'green',
+    description: `An institutional-grade desktop trading terminal built with Python and CustomTkinter. Features a live candlestick charting engine (mplfinance with Matplotlib Agg backend — no UI freeze), RSI and SMA-50 technical indicators, and an AI analyst powered by a locally running Ollama phi3.5 model that streams a financial verdict in under 50 words.`,
+    features: [
+      'Live candlestick charts via mplfinance + Matplotlib Agg (non-blocking)',
+      'RSI + SMA-50 technical indicators with BUY / SELL / NEUTRAL scoring',
+      'Crypto: BTC-USD, ETH-USD, SOL-USD, DOGE-USD',
+      'US Stocks: AAPL, TSLA, NVDA, MSFT',
+      'Indian Stocks: RELIANCE.NS, TATAMOTORS.NS, HDFCBANK.NS',
+      'Forex & Commodities: Gold (GC=F), Silver (SI=F), USD/INR, EUR/USD',
+      'Built-in Ollama phi3.5 AI analyst — streams response locally',
+      'Live Google News RSS feed per asset',
+      'Risk Calculator page + Asset Library browser',
+      'License key system (TITAN-KEY-2025)',
+    ],
+    links: [{ label: 'View Source Code ↗', href: 'https://github.com/Zeros-CodeXD/Apex-Titan-AI', primary: false }],
+    glowColor: 'rose',
+    icon: '📈',
+  },
+  {
+    id: 'cyan',
+    name: 'CYAN AI Assistant',
+    subtitle: 'Fully Offline Voice AI',
+    tags: ['Ollama llama3.2:1b', 'Piper TTS', 'SpeechRecognition', '100% Offline'],
+    tagColors: ['cyan', 'purple', 'rose', 'rose'],
+    status: 'Custom Builds',
+    statusColor: 'purple',
+    description: `A fully offline, voice-activated AI desktop assistant. Uses Ollama llama3.2:1b for local inference, Piper TTS (with the en_US-amy-medium voice model) for offline speech synthesis via pygame, and SpeechRecognition for microphone input — no internet or cloud APIs required at any point.`,
+    features: [
+      '100% offline — Ollama llama3.2:1b for local inference',
+      'Voice input via SpeechRecognition (dynamic energy threshold)',
+      'Offline TTS via Piper (en_US-amy-medium.onnx) — played through pygame',
+      'Multi-turn chat history with timestamps',
+      'Incognito mode — disables history saving for the session',
+      'Adjustable AI temperature (0.0–1.0 slider)',
+      '4 colour themes: Cyan, Purple, Green, Gold',
+      'System prompt customisation in-app',
+    ],
+    links: [{ label: 'Request a Custom Build ↗', href: '/contact', primary: true }],
+    glowColor: 'purple',
+    icon: '🎙️',
+  },
+];
+---
+
+<Layout
+  title="ZEROS | Projects"
+  description="NEXUS V2 OSINT tool, TITAN INTEL API, APEX TITAN trading terminal, and CYAN offline AI assistant — all built by ZEROS."
+  activePage="/projects"
+>
+  <!-- Page header -->
+  <div class="page-hero">
+    <p class="eyebrow">Open Source & Live</p>
+    <h1 class="page-title">My Projects</h1>
+    <p class="page-sub">Every project here is real, tested, and backed by source code — not mockups.</p>
+  </div>
+
+  <!-- Project list -->
+  <div class="projects-container">
+    {projects.map((p, i) => (
+      <article class="project-card reveal" id={p.id} style={`--delay:${i * 80}ms`}>
+        <div class={`project-accent accent-${p.glowColor}`}></div>
+
+        <div class="project-head">
+          <div class="project-left">
+            <div class="project-icon-wrap">{p.icon}</div>
+            <div>
+              <h2>{p.name}</h2>
+              <p class="project-subtitle">{p.subtitle}</p>
+            </div>
+          </div>
+          <div class={`project-status status-${p.statusColor}`}>
+            <span class={`status-dot dot-${p.statusColor}`}></span>
+            {p.status}
+          </div>
+        </div>
+
+        <div class="project-tags">
+          {p.tags.map((tag, ti) => (
+            <span class={`tag tag-${p.tagColors[ti]}`}>{tag}</span>
+          ))}
+        </div>
+
+        <p class="project-desc" set:html={p.description} />
+
+        <div class="project-features">
+          <p class="features-label">What it does</p>
+          <ul>
+            {p.features.map(f => <li>{f}</li>)}
+          </ul>
+        </div>
+
+        <div class="project-links">
+          {p.links.map(l => (
+            <a href={l.href} class={l.primary ? 'btn-primary' : 'btn-outline'} target={l.href.startsWith('http') ? '_blank' : '_self'} rel={l.href.startsWith('http') ? 'noopener noreferrer' : ''}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+      </article>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .page-hero { text-align: center; padding: 80px 24px 40px; position: relative; z-index: 10; }
+  .eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px; }
+  .page-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -2px; background: linear-gradient(135deg,#fff 0%,#a5b4fc 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom: 14px; }
+  .page-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 560px; margin: 0 auto; line-height: 1.6; }
+
+  .projects-container { max-width: 900px; margin: 0 auto; padding: 24px 24px 96px; display: flex; flex-direction: column; gap: 36px; position: relative; z-index: 10; }
+
+  .project-card { background: rgba(13,20,38,0.6); border: 1px solid var(--glass-border); border-radius: 24px; padding: 44px 40px; position: relative; overflow: hidden; transition: border-color 0.4s, transform 0.4s; }
+  .project-card:hover { border-color: rgba(56,189,248,0.2); transform: translateY(-4px); }
+
+  .project-accent { position: absolute; width: 300px; height: 300px; border-radius: 50%; top: -150px; right: -100px; opacity: 0.06; pointer-events: none; }
+  .accent-cyan { background: radial-gradient(circle, var(--primary), transparent 70%); }
+  .accent-purple { background: radial-gradient(circle, var(--secondary), transparent 70%); }
+  .accent-rose { background: radial-gradient(circle, var(--accent), transparent 70%); }
+
+  .project-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 16px; flex-wrap: wrap; }
+  .project-left { display: flex; align-items: center; gap: 16px; }
+  .project-icon-wrap { font-size: 2rem; width: 56px; height: 56px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .project-left h2 { font-size: 1.6rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; margin-bottom: 2px; }
+  .project-subtitle { font-size: 0.85rem; color: var(--text-muted); }
+
+  .project-status { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 20px; border: 1px solid; flex-shrink: 0; }
+  .status-green { color: var(--success); border-color: rgba(16,185,129,0.25); background: rgba(16,185,129,0.07); }
+  .status-purple { color: var(--secondary); border-color: rgba(168,85,247,0.25); background: rgba(168,85,247,0.07); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; animation: pulseDot 2s infinite; }
+  .dot-green { background: var(--success); }
+  .dot-purple { background: var(--secondary); box-shadow: 0 0 6px var(--secondary); }
+
+  .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .tag { font-size: 0.7rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid; }
+  .tag-cyan { background: rgba(56,189,248,0.07); color: var(--primary); border-color: rgba(56,189,248,0.2); }
+  .tag-purple { background: rgba(168,85,247,0.07); color: var(--secondary); border-color: rgba(168,85,247,0.2); }
+  .tag-rose { background: rgba(244,63,94,0.07); color: var(--accent); border-color: rgba(244,63,94,0.2); }
+
+  .project-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 28px; }
+  .project-desc code { font-family: 'Courier New', monospace; font-size: 0.88rem; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 4px; color: var(--primary); }
+
+  .project-features { background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 14px; padding: 24px 28px; margin-bottom: 28px; }
+  .features-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary); margin-bottom: 14px; }
+  .project-features ul { display: flex; flex-direction: column; gap: 9px; list-style: none; }
+  .project-features li { font-size: 0.9rem; color: var(--text-muted); padding-left: 18px; position: relative; line-height: 1.5; }
+  .project-features li::before { content: '→'; position: absolute; left: 0; color: var(--primary); font-size: 0.8rem; }
+
+  .project-links { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { padding: 12px 28px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; text-decoration: none; background: linear-gradient(135deg,var(--primary),var(--secondary)); color: white; transition: all 0.3s; box-shadow: 0 6px 20px rgba(56,189,248,0.25); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(168,85,247,0.35); }
+  .btn-outline { padding: 12px 28px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; text-decoration: none; background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid var(--glass-border); transition: all 0.3s; }
+  .btn-outline:hover { color: var(--text-main); border-color: var(--primary); background: rgba(56,189,248,0.04); transform: translateY(-2px); }
+
+  @media (max-width: 600px) {
+    .project-card { padding: 28px 22px; }
+    .page-title { font-size: 2.4rem; }
+    .project-left { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+

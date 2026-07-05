@@ -1,0 +1,195 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  activePage?: string;
+}
+
+const { title, description, activePage = '' } = Astro.props;
+
+const navItems = [
+  { href: '/',          label: 'Home'     },
+  { href: '/projects',  label: 'Projects' },
+  { href: '/services',  label: 'Services' },
+  { href: '/stack',     label: 'Stack'    },
+  { href: '/contact',   label: 'Contact'  },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- DNS Prefetch to optimize lookup times -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+
+    <!-- ===== SHARED NAV ===== -->
+    <nav class="glass-nav" id="main-nav">
+      <a href="/" class="logo">ZEROS<span>.</span></a>
+      <div class="nav-links" id="nav-links">
+        {navItems.map(item => (
+          <a
+            href={item.href}
+            class={`nav-link ${activePage === item.href ? 'nav-link--active' : ''}`}
+          >
+            {item.label}
+          </a>
+        ))}
+        <a href="/contact" class="nav-btn">Hire Me →</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <slot />
+
+    <style>
+      /* NAV */
+      .glass-nav {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 18px 8%; position: sticky; top: 0; z-index: 200;
+        background: rgba(6,9,19,0.75); backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
+      }
+      .logo {
+        font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.8rem;
+        letter-spacing: -1px; text-decoration: none; color: var(--text-main);
+      }
+      .logo span {
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      }
+      .nav-links { display: flex; align-items: center; gap: 28px; }
+      .nav-link {
+        color: var(--text-muted); text-decoration: none; font-size: 0.9rem;
+        font-weight: 500; transition: color 0.3s; position: relative; padding-bottom: 2px;
+      }
+      .nav-link::after {
+        content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+        height: 1px; background: var(--primary); transform: scaleX(0);
+        transition: transform 0.3s; transform-origin: left;
+      }
+      .nav-link:hover { color: var(--primary); }
+      .nav-link:hover::after,
+      .nav-link--active::after { transform: scaleX(1); }
+      .nav-link--active { color: var(--primary); }
+      .nav-btn {
+        background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.25);
+        color: var(--primary); padding: 9px 22px; border-radius: 30px;
+        font-weight: 600; font-size: 0.88rem; cursor: pointer; text-decoration: none;
+        transition: all 0.3s; font-family: 'Inter', sans-serif;
+      }
+      .nav-btn:hover { background: var(--primary); color: #060913; border-color: var(--primary); transform: translateY(-1px); }
+
+      /* Mobile hamburger */
+      .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+      .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-muted); border-radius: 2px; transition: all 0.3s; }
+      .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+      .hamburger.open span:nth-child(2) { opacity: 0; }
+      .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+      @media (max-width: 768px) {
+        .hamburger { display: flex; }
+        .nav-links {
+          display: none; flex-direction: column; align-items: flex-start; gap: 20px;
+          position: absolute; top: 100%; left: 0; right: 0;
+          background: rgba(6,9,19,0.98); backdrop-filter: blur(20px);
+          border-bottom: 1px solid var(--glass-border); padding: 24px 8%;
+        }
+        .nav-links.open { display: flex; }
+      }
+    </style>
+
+    <!-- Particle canvas -->
+    <script>
+      const canvas = document.getElementById('bg-canvas') as HTMLCanvasElement;
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let w = 0, h = 0;
+        class P {
+          x: number; y: number; sz: number; vx: number; vy: number; c: string;
+          constructor() {
+            this.x = Math.random() * w; this.y = Math.random() * h;
+            this.sz = Math.random() * 1.5 + 0.8;
+            this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4;
+            this.c = Math.random() > 0.5 ? 'rgba(56,189,248,0.35)' : 'rgba(168,85,247,0.35)';
+          }
+          update() {
+            this.x += this.vx; this.y += this.vy;
+            if (this.x > w) this.x = 0; if (this.x < 0) this.x = w;
+            if (this.y > h) this.y = 0; if (this.y < 0) this.y = h;
+          }
+          draw(c: CanvasRenderingContext2D) {
+            c.fillStyle = this.c; c.beginPath(); c.arc(this.x, this.y, this.sz, 0, Math.PI*2); c.fill();
+          }
+        }
+        const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
+        window.addEventListener('resize', resize); resize();
+        const pts = Array.from({ length: window.innerWidth > 768 ? 80 : 35 }, () => new P());
+        function frame() {
+          if (!ctx) return;
+          ctx.clearRect(0, 0, w, h);
+          for (let i = 0; i < pts.length; i++) {
+            pts[i].update(); pts[i].draw(ctx);
+            for (let j = i+1; j < pts.length; j++) {
+              const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+              const d = Math.sqrt(dx*dx + dy*dy);
+              if (d < 130) {
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(148,163,184,${0.08 - d/1625})`;
+                ctx.lineWidth = 0.8;
+                ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
+              }
+            }
+          }
+          requestAnimationFrame(frame);
+        }
+        frame();
+      }
+    </script>
+
+    <!-- Hamburger toggle -->
+    <script>
+      const hamburger = document.getElementById('hamburger');
+      const navLinks  = document.getElementById('nav-links');
+      hamburger?.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        navLinks?.classList.toggle('open');
+      });
+    </script>
+
+    <!-- Centralized Scroll Reveal Script -->
+    <script>
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('active');
+            observer.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+  </body>
+</html>

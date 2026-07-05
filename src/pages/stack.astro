@@ -1,0 +1,116 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const categories = [
+  {
+    label: 'Languages',
+    items: [
+      { icon: '🐍', name: 'Python', note: 'Primary language across all projects' },
+      { icon: '🔷', name: 'TypeScript', note: 'Used in Astro pages and scripts' },
+      { icon: '📄', name: 'HTML / CSS', note: 'Semantic markup and custom styling' },
+    ],
+  },
+  {
+    label: 'AI & LLMs',
+    items: [
+      { icon: '🦙', name: 'Ollama (llama3.2:1b, phi3.5)', note: 'Local inference for CYAN & APEX TITAN' },
+      { icon: '♊', name: 'Gemini API', note: 'Cloud fallback in chatbot cascade' },
+      { icon: '🎯', name: 'Groq API', note: 'Primary cloud LLM for web chatbot' },
+      { icon: '🔊', name: 'Piper TTS', note: 'Offline text-to-speech in CYAN' },
+      { icon: '🎙️', name: 'SpeechRecognition', note: 'Microphone input in CYAN' },
+    ],
+  },
+  {
+    label: 'Web & APIs',
+    items: [
+      { icon: '🚀', name: 'Astro', note: 'Static site framework for this portfolio' },
+      { icon: '⚡', name: 'FastAPI', note: 'REST API backend for TITAN INTEL API' },
+      { icon: '📧', name: 'EmailJS', note: 'Lead capture in chatbot ticket pipeline' },
+      { icon: '☁️', name: 'RapidAPI', note: 'Marketplace for TITAN INTEL API' },
+    ],
+  },
+  {
+    label: 'Scraping & OSINT',
+    items: [
+      { icon: '🔄', name: 'aiohttp + asyncio', note: '50-worker async engine in NEXUS V2 & TITAN' },
+      { icon: '🕷️', name: 'BeautifulSoup', note: 'HTML parsing for contact extraction' },
+      { icon: '🔍', name: 'Regex (re module)', note: 'Email and phone pattern matching' },
+      { icon: '🖼️', name: 'Pillow + ExifTags', note: 'EXIF GPS forensics in NEXUS V2' },
+    ],
+  },
+  {
+    label: 'Desktop & Data',
+    items: [
+      { icon: '🎨', name: 'CustomTkinter', note: 'Desktop UI for CYAN and APEX TITAN' },
+      { icon: '📊', name: 'mplfinance + matplotlib', note: 'Candlestick charts in APEX TITAN' },
+      { icon: '💹', name: 'yfinance', note: 'Live market data in APEX TITAN' },
+      { icon: '📰', name: 'feedparser', note: 'Google News RSS feed in APEX TITAN' },
+      { icon: '🎮', name: 'pygame', note: 'Audio playback for Piper TTS in CYAN' },
+    ],
+  },
+];
+---
+
+<Layout
+  title="ZEROS | Tech Stack"
+  description="Every technology I use, with the project it appears in. No fluff — only tools that are in shipped code."
+  activePage="/stack"
+>
+  <div class="page-hero">
+    <p class="eyebrow">Tools of the Trade</p>
+    <h1 class="page-title">Tech Stack</h1>
+    <p class="page-sub">Every tool below appears in at least one shipped project. No fluff, no aspirational lists.</p>
+  </div>
+
+  <div class="stack-container">
+    {categories.map((cat, ci) => (
+      <div class="stack-category reveal" style={`--delay:${ci * 60}ms`}>
+        <h2 class="cat-label">{cat.label}</h2>
+        <div class="cat-grid">
+          {cat.items.map(item => (
+            <div class="stack-item">
+              <span class="stack-emoji">{item.icon}</span>
+              <div class="stack-info">
+                <strong>{item.name}</strong>
+                <span>{item.note}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <!-- Note -->
+    <div class="stack-note reveal">
+      <span class="note-icon">📌</span>
+      <p>This list is derived directly from <code>import</code> statements and <code>requirements.txt</code> files in the actual source code — not a wishlist.</p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-hero { text-align: center; padding: 80px 24px 40px; position: relative; z-index: 10; }
+  .eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px; }
+  .page-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -2px; background: linear-gradient(135deg,#fff 0%,#a5b4fc 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom: 14px; }
+  .page-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 560px; margin: 0 auto; line-height: 1.6; }
+
+  .stack-container { max-width: 960px; margin: 0 auto; padding: 40px 24px 96px; position: relative; z-index: 10; display: flex; flex-direction: column; gap: 48px; }
+
+  .stack-category {}
+  .cat-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--glass-border); }
+
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+  .stack-item { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 14px; padding: 16px 20px; transition: all 0.3s; }
+  .stack-item:hover { background: rgba(56,189,248,0.05); border-color: rgba(56,189,248,0.2); transform: translateY(-2px); }
+  .stack-emoji { font-size: 1.6rem; flex-shrink: 0; }
+  .stack-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .stack-info strong { font-size: 0.92rem; font-weight: 700; color: var(--text-main); }
+  .stack-info span { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .stack-note { display: flex; align-items: flex-start; gap: 14px; background: rgba(56,189,248,0.04); border: 1px solid rgba(56,189,248,0.15); border-radius: 14px; padding: 20px 24px; }
+  .note-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+  .stack-note p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+  .stack-note code { font-family: 'Courier New', monospace; font-size: 0.84rem; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 4px; color: var(--primary); }
+</style>
+
