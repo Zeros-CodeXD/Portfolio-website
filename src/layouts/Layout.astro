@@ -45,17 +45,17 @@ const navItems = [
 
     <!-- ===== SHARED NAV ===== -->
     <nav class="glass-nav" id="main-nav">
-      <a href="/" class="logo">ZEROS<span>.</span></a>
+      <a href={import.meta.env.BASE_URL} class="logo">ZEROS<span>.</span></a>
       <div class="nav-links" id="nav-links">
         {navItems.map(item => (
           <a
-            href={item.href}
+            href={import.meta.env.BASE_URL + item.href.slice(1)}
             class={`nav-link ${activePage === item.href ? 'nav-link--active' : ''}`}
           >
             {item.label}
           </a>
         ))}
-        <a href="/contact" class="nav-btn">Hire Me →</a>
+        <a href={`${import.meta.env.BASE_URL}contact`} class="nav-btn">Hire Me →</a>
       </div>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>

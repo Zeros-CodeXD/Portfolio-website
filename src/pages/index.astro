@@ -23,8 +23,8 @@ import Chatbot from '../components/Chatbot.astro';
         I build OSINT scrapers, offline AI assistants, trading dashboards, and custom LLM chatbots — tools that run your business on autopilot.
       </p>
       <div class="hero-ctas">
-        <a href="/services" class="cta-primary">View Services →</a>
-        <a href="/projects" class="cta-outline">See Projects</a>
+        <a href={`${import.meta.env.BASE_URL}services`} class="cta-primary">View Services →</a>
+        <a href={`${import.meta.env.BASE_URL}projects`} class="cta-outline">See Projects</a>
       </div>
     </div>
 
@@ -62,7 +62,7 @@ import Chatbot from '../components/Chatbot.astro';
     <div class="strip-inner">
       <p class="strip-label">Featured Projects</p>
       <div class="strip-cards">
-        <a href="/projects#nexus" class="strip-card">
+        <a href={`${import.meta.env.BASE_URL}projects#nexus`} class="strip-card">
           <span class="strip-icon">🕷️</span>
           <div>
             <strong>NEXUS V2</strong>
@@ -70,7 +70,7 @@ import Chatbot from '../components/Chatbot.astro';
           </div>
           <span class="strip-arrow">↗</span>
         </a>
-        <a href="/projects#titan" class="strip-card">
+        <a href={`${import.meta.env.BASE_URL}projects#titan`} class="strip-card">
           <span class="strip-icon">⚡</span>
           <div>
             <strong>TITAN INTEL API</strong>
@@ -78,7 +78,7 @@ import Chatbot from '../components/Chatbot.astro';
           </div>
           <span class="strip-arrow">↗</span>
         </a>
-        <a href="/projects#apex" class="strip-card">
+        <a href={`${import.meta.env.BASE_URL}projects#apex`} class="strip-card">
           <span class="strip-icon">📈</span>
           <div>
             <strong>APEX TITAN v2</strong>
@@ -86,7 +86,7 @@ import Chatbot from '../components/Chatbot.astro';
           </div>
           <span class="strip-arrow">↗</span>
         </a>
-        <a href="/projects#cyan" class="strip-card">
+        <a href={`${import.meta.env.BASE_URL}projects#cyan`} class="strip-card">
           <span class="strip-icon">🤖</span>
           <div>
             <strong>CYAN AI</strong>
@@ -110,25 +110,25 @@ import Chatbot from '../components/Chatbot.astro';
         <div class="cap-icon cyan-ring">🕷️</div>
         <h3>OSINT & Scraping</h3>
         <p>Async scrapers running up to 50 concurrent workers. Extracts emails, phone numbers, social vectors with rotating stealth headers.</p>
-        <a href="/projects" class="cap-link">See NEXUS V2 →</a>
+        <a href={`${import.meta.env.BASE_URL}projects`} class="cap-link">See NEXUS V2 →</a>
       </div>
       <div class="cap-card reveal" style="--delay:100ms">
         <div class="cap-icon purple-ring">🤖</div>
         <h3>Custom AI Agents</h3>
         <p>Fully offline local LLMs via Ollama. Cloud chatbots with triple-redundant fallback (Groq → Gemini → Pollinations) and EmailJS pipelines.</p>
-        <a href="/projects#cyan" class="cap-link">See CYAN AI →</a>
+        <a href={`${import.meta.env.BASE_URL}projects#cyan`} class="cap-link">See CYAN AI →</a>
       </div>
       <div class="cap-card reveal" style="--delay:200ms">
         <div class="cap-icon rose-ring">📈</div>
         <h3>Trading Dashboards</h3>
         <p>CustomTkinter terminals with live candlestick charts, RSI + SMA-50 indicators, Ollama AI analyst, and Google News feeds.</p>
-        <a href="/projects#apex" class="cap-link">See APEX TITAN →</a>
+        <a href={`${import.meta.env.BASE_URL}projects#apex`} class="cap-link">See APEX TITAN →</a>
       </div>
       <div class="cap-card reveal" style="--delay:300ms">
         <div class="cap-icon emerald-ring">🌐</div>
         <h3>Web Development</h3>
         <p>Fast, responsive Astro + FastAPI sites with embedded chatbots, REST APIs, and glassmorphic UI from scratch.</p>
-        <a href="/services" class="cap-link">View packages →</a>
+        <a href={`${import.meta.env.BASE_URL}services`} class="cap-link">View packages →</a>
       </div>
     </div>
   </section>
@@ -139,8 +139,8 @@ import Chatbot from '../components/Chatbot.astro';
       <h2>Ready to build something?</h2>
       <p>Let's talk about your project — no commitment required.</p>
       <div class="cta-row">
-        <a href="/contact" class="cta-primary">Start a Project →</a>
-        <a href="/services" class="cta-outline">View Pricing</a>
+        <a href={`${import.meta.env.BASE_URL}contact`} class="cta-primary">Start a Project →</a>
+        <a href={`${import.meta.env.BASE_URL}services`} class="cta-outline">View Pricing</a>
       </div>
     </div>
   </section>
